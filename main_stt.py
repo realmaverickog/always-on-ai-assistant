@@ -70,13 +70,25 @@ def deep(
         # wake_words="deep"
         # realtime_processing_pause=0.3,
         # post_speech_silence_duration=0.3,
-        enable_realtime_transcription=True,
-        on_realtime_transcription_update=lambda text: print(
-            f"🎤 on_realtime_transcription_update(): {text}"
-        ),
-        on_realtime_transcription_stabilized=lambda text: print(
-            f"🎤 on_realtime_transcription_stabilized(): {text}"
-        ),
+        # compute_type="int8",
+        # compute_type="int8_float32",
+        # compute_type="int8_float16",
+        # compute_type="int8_bfloat16",
+        # compute_type="int16",
+        # compute_type="float16",
+        # compute_type="bfloat16",
+        compute_type="float32",
+        # enable_realtime_transcription=True,
+        # on_realtime_transcription_update=lambda text: print(
+        #     f"🎤 on_realtime_transcription_update(): {text}"
+        # ),
+        # on_realtime_transcription_stabilized=lambda text: print(
+        #     f"🎤 on_realtime_transcription_stabilized(): {text}"
+        # ),
+        # on_recorded_chunk=lambda chunk: print(f"🎤 on_recorded_chunk(): {chunk}"),
+        # on_transcription_start=lambda: print("🎤 on_transcription_start()"),
+        # on_recording_stop=lambda: print("🎤 on_transcription_stop()"),
+        # on_recording_start=lambda: print("🎤 on_recording_start()"),
         # model="large-v3",
         model="tiny.en",
         realtime_model_type="tiny.en",
