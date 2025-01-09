@@ -66,11 +66,17 @@ def deep(
     
     """
     recorder = AudioToTextRecorder(
-        # wake_words="deep"
         spinner=False,
-        enable_realtime_transcription=False,
+        # wake_words="deep"
         # realtime_processing_pause=0.3,
         # post_speech_silence_duration=0.3,
+        enable_realtime_transcription=True,
+        on_realtime_transcription_update=lambda text: print(
+            f"🎤 on_realtime_transcription_update(): {text}"
+        ),
+        on_realtime_transcription_stabilized=lambda text: print(
+            f"🎤 on_realtime_transcription_stabilized(): {text}"
+        ),
         # model="large-v3",
         model="tiny.en",
         realtime_model_type="tiny.en",
