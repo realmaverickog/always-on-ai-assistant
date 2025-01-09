@@ -79,6 +79,10 @@ def setup_logging(session_id: str):
         }
         
         def format(self, record):
+            # Skip stdout for messages with skip_stdout flag
+            if hasattr(record, 'skip_stdout') and record.skip_stdout:
+                return ""
+                
             emoji = self.EMOJI_MAP.get(record.levelno, "📝")
             self._style._fmt = f"{emoji} %(asctime)s - %(levelname)s - %(message)s"
             return super().format(record)
@@ -87,9 +91,13 @@ def setup_logging(session_id: str):
     file_handler = logging.FileHandler(log_file)
     file_handler.setFormatter(EmojiFormatter())
     
-    # Create stdout handler
+    # Create stdout handler with filter
     stdout_handler = logging.StreamHandler(sys.stdout)
-    stdout_handler.setFormatter(EmojiFormatter())
+    stdout_formatter = EmojiFormatter()
+    stdout_handler.setFormatter(stdout_formatter)
+    
+    # Add filter to skip messages with skip_stdout flag
+    stdout_handler.addFilter(lambda record: not getattr(record, 'skip_stdout', False))
     
     # Add both handlers
     logger.addHandler(file_handler)

@@ -1,3 +1,4 @@
+from typing import List
 from modules.data_types import MockDataType
 from modules.deepseek import prefix_prompt
 from modules.execute_python import execute_uv_python
@@ -23,31 +24,47 @@ def deep(
     typer_file: str = typer.Option(
         ..., "--typer-file", "-f", help="Path to typer commands file"
     ),
-    scratchpad: str = typer.Option(
-        ..., "--scratchpad", "-s", help="Path to scratchpad file"
+    scratchpad: List[str] = typer.Option(
+        ..., "--scratchpad", "-s", help="List of scratchpad files"
     ),
     prompt_text: str = typer.Option(..., "--prompt", "-p", help="Prompt text"),
 ):
     # Create session ID and setup logging
     session_id = create_session_logger_id()
     logger = setup_logging(session_id)
+    log_file = build_file_name_session("session.log", session_id)
+    logger.info(f"📂 Session log file: {log_file}")
     logger.info(f"🚀 Starting session {session_id}")
 
     # ensure both files exist
     if not os.path.exists(typer_file):
         logger.error(f"📂 Typer file {typer_file} does not exist")
         raise typer.Exit(1)
-    if not os.path.exists(scratchpad):
-        logger.error(f"📝 Scratchpad file {scratchpad} does not exist")
-        raise typer.Exit(1)
+    
+    # Check each scratchpad file individually
+    for file_path in scratchpad:
+        if not os.path.exists(file_path):
+            logger.error(f"📄 Scratchpad file {file_path} does not exist")
+            raise typer.Exit(1)
 
     try:
-        # Load files
-        logger.info("📂 Loading files...")
+        # Load typer file
+        logger.info("📂 Loading typer file...")
         with open(typer_file, "r") as f:
             typer_content = f.read()
-        with open(scratchpad, "r") as f:
-            scratchpad_content = f.read()
+
+        # Load all scratchpad files
+        logger.info("📝 Loading scratchpad files...")
+        scratchpad_content = ""
+        for file_path in scratchpad:
+            if not os.path.exists(file_path):
+                logger.error(f"📄 Scratchpad file {file_path} does not exist")
+                raise typer.Exit(1)
+            
+            with open(file_path, "r") as f:
+                file_content = f.read()
+                file_name = os.path.basename(file_path)
+                scratchpad_content += f'<scratchpad name="{file_name}">\n{file_content}\n</scratchpad>\n\n'
 
         # Load and format prompt template
         logger.info("📝 Loading prompt template...")
@@ -60,6 +77,12 @@ def deep(
             .replace("{{scratch_pad}}", scratchpad_content)
             .replace("{{natural_language_request}}", prompt_text)
         )
+        
+        # Log the filled prompt template to file only (not stdout)
+        with open(log_file, "a") as log:
+            log.write("\n📝 Filled prompt template:\n")
+            log.write(formatted_prompt)
+            log.write("\n\n")
 
         # Generate command using DeepSeek
         logger.info("🤖 Generating command with DeepSeek...")

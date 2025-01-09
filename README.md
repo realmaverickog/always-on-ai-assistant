@@ -17,3 +17,8 @@ python main.py deep --typer-file commands/template.py --scratchpad scratchpad.tx
 - 💻 Active Memory (Dynamic Variables): `scratchpad.txt` + `commands/template.py`
 - 👂 Ears (STT): `OpenAI Whisper v3` 
 - 🎤 Mouth (TTS): `ElevenLabs Turbo`
+
+## Improvements
+- [] add arbitrary 'scratchpad' files (make it a list)
+- [] add ears (STT)
+- [] add mouth (TTS)
