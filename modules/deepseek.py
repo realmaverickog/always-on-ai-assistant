@@ -11,8 +11,10 @@ client = OpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY"), base_url="https://api.deepseek.com/beta"
 )
 
+DEEPSEEK_V3_MODEL = "deepseek-chat"
 
-def prompt(prompt: str, model: str = "deepseek-chat") -> str:
+
+def prompt(prompt: str, model: str = DEEPSEEK_V3_MODEL) -> str:
     """
     Send a prompt to DeepSeek and get detailed benchmarking response.
     """
@@ -23,7 +25,7 @@ def prompt(prompt: str, model: str = "deepseek-chat") -> str:
 
 
 def fill_in_the_middle_prompt(
-    prompt: str, suffix: str, model: str = "deepseek-chat"
+    prompt: str, suffix: str, model: str = DEEPSEEK_V3_MODEL
 ) -> str:
     """
     Send a fill-in-the-middle prompt to DeepSeek and get response.
@@ -38,7 +40,7 @@ def fill_in_the_middle_prompt(
     return prompt + response.choices[0].text + suffix
 
 
-def json_prompt(prompt: str, model: str = "deepseek-chat") -> dict:
+def json_prompt(prompt: str, model: str = DEEPSEEK_V3_MODEL) -> dict:
     """
     Send a prompt to DeepSeek and get JSON response.
 
@@ -58,7 +60,7 @@ def json_prompt(prompt: str, model: str = "deepseek-chat") -> dict:
     return json.loads(response.choices[0].message.content)
 
 
-def prefix_prompt(prompt: str, prefix: str, model: str = "deepseek-chat") -> str:
+def prefix_prompt(prompt: str, prefix: str, model: str = DEEPSEEK_V3_MODEL) -> str:
     """
     Send a prompt to DeepSeek with a prefix constraint and get 'prefix + response'
 
@@ -80,7 +82,7 @@ def prefix_prompt(prompt: str, prefix: str, model: str = "deepseek-chat") -> str
 
 
 def prefix_then_stop_prompt(
-    prompt: str, prefix: str, suffix: str, model: str = "deepseek-chat"
+    prompt: str, prefix: str, suffix: str, model: str = DEEPSEEK_V3_MODEL
 ) -> str:
     """
     Send a prompt to DeepSeek with a prefix and suffix constraint and get 'response' only that will have started with prefix and ended with suffix
