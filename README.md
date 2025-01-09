@@ -1,5 +1,11 @@
 # Deepseek AI Assistant
 
+## Commands
+
+```bash
+python main.py deep --typer-file commands/template.py --scratchpad scratchpad.txt --prompt "Ping the server"
+```
+
 ## Setup
 
 - `git remote remove origin`

@@ -53,6 +53,17 @@ def create_session_logger_id() -> str:
     )
 
 
+import logging
+
+def setup_logging(session_id: str):
+    """Configure logging with session-specific log file"""
+    log_file = build_file_name_session("session.log", session_id)
+    logging.basicConfig(
+        filename=log_file,
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+    )
+
 def parse_markdown_backticks(str) -> str:
     if "```" not in str:
         return str.strip()
