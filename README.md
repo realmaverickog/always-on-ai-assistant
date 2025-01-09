@@ -16,6 +16,16 @@
 
 
 ## Commands
+
+### Assistant Conversational Commands
+
+```bash
+python main_stt.py deep --typer-file commands/template.py --scratchpad scratchpad.txt
+```
+
+### One shot shell commands
+> These commands mirror a single text command to the Deepseek AI Assistant, execute it and returns the output of the command.
+
 ```bash
 # Basic commands
 python main.py deep --typer-file commands/template.py --scratchpad scratchpad.txt --prompt "Ping the server"
@@ -43,6 +53,8 @@ python main.py deep --typer-file commands/template.py --scratchpad scratchpad.tx
 python main.py deep --typer-file commands/template.py --scratchpad scratchpad.txt --prompt "health check auth_service timeout=60 alert"
 python main.py deep --typer-file commands/template.py --scratchpad scratchpad.txt --prompt "sync remotes production --force"
 ```
+
+
 
 ## Improvements
 - [x] add arbitrary 'scratchpad' files (make it a list)

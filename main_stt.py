@@ -8,8 +8,14 @@ import os
 
 app = typer.Typer()
 
+
 @app.command()
-def stt(
+def ping():
+    print("pong")
+
+
+@app.command()
+def deep(
     typer_file: str = typer.Option(
         ..., "--typer-file", "-f", help="Path to typer commands file"
     ),
@@ -18,8 +24,10 @@ def stt(
     ),
 ):
     """Run STT interface that processes speech into typer commands"""
-    assistant, typer_file, scratchpad = TyperAssistant.build_assistant(typer_file, scratchpad)
-    
+    assistant, typer_file, scratchpad = TyperAssistant.build_assistant(
+        typer_file, scratchpad
+    )
+
     print("🎤 Speak now... (press Ctrl+C to exit)")
     recorder = AudioToTextRecorder()
 
@@ -33,6 +41,7 @@ def stt(
 
     while True:
         recorder.text(process_text)
+
 
 if __name__ == "__main__":
     app()
