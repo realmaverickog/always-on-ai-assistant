@@ -29,11 +29,18 @@ def deep(
     )
 
     print("🎤 Speak now... (press Ctrl+C to exit)")
-    recorder = AudioToTextRecorder()
+    recorder = AudioToTextRecorder(
+        # wake_words="deep"
+        spinner=False,
+        enable_realtime_transcription=True,
+    )
 
     def process_text(text):
         print(f"\n🎤 Heard: {text}")
         try:
+            if "deep" not in text.lower():
+                print("🤖 Response:\nNot deep")
+                return
             output = assistant.process_text(text, typer_file, scratchpad)
             print(f"🤖 Response:\n{output}")
         except Exception as e:

@@ -58,8 +58,10 @@ python main.py deep --typer-file commands/template.py --scratchpad scratchpad.tx
 
 ## Improvements
 - [x] add arbitrary 'scratchpad' files (make it a list)
-- [] add ears (STT)
+- [x] add ears (STT)
 - [] add mouth (TTS)
+- [] add previous command map history. 1. 'deep go ahead and backup the db' -> 'backup-data db/'\n2. '...'
+  - this lets us say refer to previous commands.
 
 ## Resources
 - LOCAL SPEECH TO TEXT: https://github.com/KoljaB/RealtimeSTT
