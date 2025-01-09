@@ -9,6 +9,7 @@
     <instruction>Be sure to use - for the function names instead of _ (example: 'hello-world' instead of 'hello_world')</instruction>
     <instruction>Don't use = for arguments, use spaces instead (example: 'hello-world --name John' instead of 'hello-world --name=John')</instruction>
     <instruction>If multiple commands are requested chain them together with '&&' so they run back to back in the terminal only if the previous command succeeds.</instruction>
+    <instruction>Respond with the command only, we will prefix the correct python and file to it.</instruction>
 </instructions>
 
 <typer-commands>
