@@ -68,12 +68,15 @@ def deep(
     recorder = AudioToTextRecorder(
         # wake_words="deep"
         spinner=False,
-        enable_realtime_transcription=True,
+        enable_realtime_transcription=False,
         # realtime_processing_pause=0.3,
-        post_speech_silence_duration=0.3,
-        model="large-v3",
+        # post_speech_silence_duration=0.3,
+        # model="large-v3",
+        model="tiny.en",
         realtime_model_type="tiny.en",
+        # realtime_model_type="large-v3",
         language="en",
+        print_transcription_time=True,
     )
 
     def process_text(text):
