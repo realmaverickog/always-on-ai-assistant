@@ -68,17 +68,28 @@ def setup_logging(session_id: str):
     # Clear any existing handlers to avoid duplicates
     logger.handlers.clear()
     
+    # Create formatter with emoji mapping
+    class EmojiFormatter(logging.Formatter):
+        EMOJI_MAP = {
+            logging.INFO: "ℹ️",
+            logging.WARNING: "⚠️",
+            logging.ERROR: "❌",
+            logging.CRITICAL: "🔥",
+            logging.DEBUG: "🐛"
+        }
+        
+        def format(self, record):
+            emoji = self.EMOJI_MAP.get(record.levelno, "📝")
+            self._style._fmt = f"{emoji} %(asctime)s - %(levelname)s - %(message)s"
+            return super().format(record)
+    
     # Create file handler
     file_handler = logging.FileHandler(log_file)
-    file_handler.setFormatter(
-        logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-    )
+    file_handler.setFormatter(EmojiFormatter())
     
     # Create stdout handler
     stdout_handler = logging.StreamHandler(sys.stdout)
-    stdout_handler.setFormatter(
-        logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-    )
+    stdout_handler.setFormatter(EmojiFormatter())
     
     # Add both handlers
     logger.addHandler(file_handler)
