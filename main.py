@@ -1,6 +1,6 @@
 from typing import List
 from modules.data_types import MockDataType
-from modules.typer_assistant import TyperAssistant
+from modules.typer_agent import TyperAgent
 from modules.utils import (
     create_session_logger_id,
     setup_logging,
@@ -36,7 +36,7 @@ def deep(
     if not os.path.exists(typer_file):
         logger.error(f"📂 Typer file {typer_file} does not exist")
         raise typer.Exit(1)
-    
+
     # Check each scratchpad file individually
     for file_path in scratchpad:
         if not os.path.exists(file_path):
@@ -44,7 +44,7 @@ def deep(
             raise typer.Exit(1)
 
     # Create and use TyperAssistant
-    assistant = TyperAssistant(logger)
+    assistant = TyperAgent(logger)
     return assistant.deep(typer_file, scratchpad, prompt_text, session_id)
 
 

@@ -10,7 +10,7 @@ from modules.deepseek import prefix_prompt
 from modules.execute_python import execute_uv_python
 
 
-class TyperAssistant:
+class TyperAgent:
     def __init__(self, logger: logging.Logger, session_id: str):
         self.logger = logger
         self.session_id = session_id
