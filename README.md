@@ -48,3 +48,6 @@ python main.py deep --typer-file commands/template.py --scratchpad scratchpad.tx
 - [x] add arbitrary 'scratchpad' files (make it a list)
 - [] add ears (STT)
 - [] add mouth (TTS)
+
+## Resources
+- LOCAL SPEECH TO TEXT: https://github.com/KoljaB/RealtimeSTT
