@@ -24,19 +24,18 @@ def test_fill_in_the_middle_prompt():
     last_name,
     """,
         suffix="""
-FROM customers
-WHERE country = 'USA'
 ORDER BY last_name ASC;
-"""
+""",
     )
-    
+
     assert isinstance(response, str)
     assert len(response) > 10  # Verify meaningful content
-    assert "SELECT" not in response  # Verify prefix is not duplicated
-    assert "FROM" not in response  # Verify suffix is not included
-    
+    assert "FROM" in response  # Verify suffix is not included
+
     # Verify SQL syntax and common patterns
-    assert any(word in response for word in ["email", "phone", "address", "city", "state"])  # Common customer columns
+    assert any(
+        word in response for word in ["email", "phone", "address", "city", "state"]
+    )  # Common customer columns
     assert "," in response  # Verify proper column separation
     assert "\n" in response  # Verify formatting
 

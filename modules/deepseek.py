@@ -28,12 +28,14 @@ def fill_in_the_middle_prompt(
     """
     Send a fill-in-the-middle prompt to DeepSeek and get response.
 
+    The max tokens of FIM completion is 4K.
+
     example:
         prompt="def fib(a):",
         suffix="    return fib(a-1) + fib(a-2)",
     """
     response = client.completions.create(model=model, prompt=prompt, suffix=suffix)
-    return response.choices[0].text
+    return prompt + response.choices[0].text + suffix
 
 
 def json_prompt(prompt: str, model: str = "deepseek-chat") -> dict:
@@ -58,7 +60,7 @@ def json_prompt(prompt: str, model: str = "deepseek-chat") -> dict:
 
 def prefix_prompt(prompt: str, prefix: str, model: str = "deepseek-chat") -> str:
     """
-    Send a prompt to DeepSeek with a prefix constraint and get response.
+    Send a prompt to DeepSeek with a prefix constraint and get 'prefix + response'
 
     Args:
         prompt: The user prompt to send
@@ -74,14 +76,14 @@ def prefix_prompt(prompt: str, prefix: str, model: str = "deepseek-chat") -> str
     ]
 
     response = client.chat.completions.create(model=model, messages=messages)
-    return response.choices[0].message.content
+    return prefix + response.choices[0].message.content
 
 
-def prefix_suffix_prompt(
+def prefix_then_stop_prompt(
     prompt: str, prefix: str, suffix: str, model: str = "deepseek-chat"
 ) -> str:
     """
-    Send a prompt to DeepSeek with a prefix and suffix constraint and get response.
+    Send a prompt to DeepSeek with a prefix and suffix constraint and get 'response' only that will have started with prefix and ended with suffix
 
     Args:
         prompt: The user prompt to send
@@ -100,3 +102,4 @@ def prefix_suffix_prompt(
         model=model, messages=messages, stop=[suffix]
     )
     return response.choices[0].message.content
+    # return prefix + response.choices[0].message.content
