@@ -71,13 +71,20 @@ def deep(
         # realtime_processing_pause=0.3,
         # post_speech_silence_duration=0.3,
         # compute_type="int8",
-        # compute_type="int8_float32",
-        # compute_type="int8_float16",
-        # compute_type="int8_bfloat16",
-        # compute_type="int16",
-        # compute_type="float16",
-        # compute_type="bfloat16",
-        compute_type="float32",
+        # compute_type="float32",
+        model="tiny.en",
+        # Beam size controls how many alternative transcription paths are explored
+        # Higher values = more accurate but slower, lower values = faster but less accurate
+        beam_size=3,
+        # Batch size controls how many audio chunks are processed together
+        # Higher values = faster processing but uses more memory, lower values = slower processing but uses less memory
+        batch_size=25,
+        # model="large-v3",
+        # model="distil-large-v3",
+        # realtime_model_type="tiny.en",
+        # realtime_model_type="large-v3",
+        language="en",
+        print_transcription_time=True,
         # enable_realtime_transcription=True,
         # on_realtime_transcription_update=lambda text: print(
         #     f"🎤 on_realtime_transcription_update(): {text}"
@@ -89,12 +96,6 @@ def deep(
         # on_transcription_start=lambda: print("🎤 on_transcription_start()"),
         # on_recording_stop=lambda: print("🎤 on_transcription_stop()"),
         # on_recording_start=lambda: print("🎤 on_recording_start()"),
-        # model="large-v3",
-        model="tiny.en",
-        realtime_model_type="tiny.en",
-        # realtime_model_type="large-v3",
-        language="en",
-        print_transcription_time=True,
     )
 
     def process_text(text):

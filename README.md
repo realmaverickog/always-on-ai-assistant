@@ -65,3 +65,4 @@ python main.py deep --typer-file commands/template.py --scratchpad scratchpad.tx
 
 ## Resources
 - LOCAL SPEECH TO TEXT: https://github.com/KoljaB/RealtimeSTT
+- faster whisper (support for RealtimeSTT) https://github.com/SYSTRAN/faster-whisper
