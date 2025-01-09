@@ -30,27 +30,27 @@ def deep(
 ):
     # Create session ID and setup logging
     session_id = create_session_logger_id()
-    setup_logging(session_id)
-    logging.info(f"Starting session {session_id}")
+    logger = setup_logging(session_id)
+    logger.info(f"Starting session {session_id}")
 
     # ensure both files exist
     if not os.path.exists(typer_file):
-        logging.error(f"Typer file {typer_file} does not exist")
+        logger.error(f"Typer file {typer_file} does not exist")
         raise typer.Exit(1)
     if not os.path.exists(scratchpad):
-        logging.error(f"Scratchpad file {scratchpad} does not exist")
+        logger.error(f"Scratchpad file {scratchpad} does not exist")
         raise typer.Exit(1)
 
     try:
         # Load files
-        logging.info("Loading files...")
+        logger.info("Loading files...")
         with open(typer_file, "r") as f:
             typer_content = f.read()
         with open(scratchpad, "r") as f:
             scratchpad_content = f.read()
 
         # Load and format prompt template
-        logging.info("Loading prompt template...")
+        logger.info("Loading prompt template...")
         with open("prompts/typer-commands.xml", "r") as f:
             prompt_template = f.read()
 
@@ -62,20 +62,19 @@ def deep(
         )
 
         # Generate command using DeepSeek
-        logging.info("Generating command with DeepSeek...")
+        logger.info("Generating command with DeepSeek...")
         command = prefix_prompt(prompt=formatted_prompt, prefix=f"python {typer_file} ")
 
         # Execute the generated command
-        logging.info(f"Executing command: {command}")
+        logger.info(f"Executing command: {command}")
         output = execute_uv_python(command, typer_file)
 
         # Print and log results
-        print(output)
-        logging.info("Command execution completed successfully")
-        logging.info(f"Output:\n{output}")
+        logger.info("Command execution completed successfully")
+        logger.info(f"Output:\n{output}")
 
     except Exception as e:
-        logging.error(f"Error occurred: {str(e)}")
+        logger.error(f"Error occurred: {str(e)}")
         raise
 
 

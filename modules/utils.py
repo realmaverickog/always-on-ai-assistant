@@ -54,15 +54,38 @@ def create_session_logger_id() -> str:
 
 
 import logging
+import sys
+
 
 def setup_logging(session_id: str):
-    """Configure logging with session-specific log file"""
+    """Configure logging with session-specific log file and stdout"""
     log_file = build_file_name_session("session.log", session_id)
-    logging.basicConfig(
-        filename=log_file,
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
+    
+    # Create a new logger specific to our application
+    logger = logging.getLogger("main")
+    logger.setLevel(logging.INFO)
+    
+    # Clear any existing handlers to avoid duplicates
+    logger.handlers.clear()
+    
+    # Create file handler
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     )
+    
+    # Create stdout handler
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    )
+    
+    # Add both handlers
+    logger.addHandler(file_handler)
+    logger.addHandler(stdout_handler)
+    
+    return logger
+
 
 def parse_markdown_backticks(str) -> str:
     if "```" not in str:
