@@ -64,6 +64,7 @@ def deep(
         # Generate command using DeepSeek
         logger.info("Generating command with DeepSeek...")
         command = prefix_prompt(prompt=formatted_prompt, prefix=f"python {typer_file} ")
+        logger.info(f"Generated command: {command}")
 
         # Execute the generated command
         logger.info(f"Executing command: {command}")
