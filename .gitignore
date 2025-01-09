@@ -190,3 +190,6 @@ apps/ada/personalization.json
 apps/ada/runtime_time_table.jsonl
 
 session_dir/
+
+specs/
+adw/

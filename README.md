@@ -1,4 +1,4 @@
-# PAIC Python Starter
+# Deepseek AI Assistant
 
 ## Setup
 
