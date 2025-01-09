@@ -1,1 +1,3 @@
 source_dir: /Users/idd/code/src/, incremental: true, confirm: true
+
+old_db: /Users/idd/code/src/db/old.db

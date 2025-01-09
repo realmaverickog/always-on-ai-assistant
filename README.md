@@ -6,6 +6,12 @@
 python main.py deep --typer-file commands/template.py --scratchpad scratchpad.txt --prompt "Ping the server"
 ```
 
+## Architecture
+- Brain: Deepseek
+- Active Memory: scratchpad.txt
+- Ears: OpenAI Whisper v3 (for speech to text)
+- Mouth: ElevenLabs Turbo
+
 ## Setup
 
 - `git remote remove origin`
