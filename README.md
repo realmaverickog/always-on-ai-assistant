@@ -45,6 +45,6 @@ python main.py deep --typer-file commands/template.py --scratchpad scratchpad.tx
 ```
 
 ## Improvements
-- [] add arbitrary 'scratchpad' files (make it a list)
+- [x] add arbitrary 'scratchpad' files (make it a list)
 - [] add ears (STT)
 - [] add mouth (TTS)
