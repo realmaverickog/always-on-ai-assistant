@@ -1,0 +1,166 @@
+2025-01-09 16:38:43.087 - RealTimeSTT: root - INFO - Starting RealTimeSTT
+2025-01-09 16:38:43.093 - RealTimeSTT: root - INFO - Initializing audio recording (creating pyAudio input stream, sample rate: 16000 buffer size: 512
+2025-01-09 16:38:43.096 - RealTimeSTT: root - INFO - Initializing WebRTC voice with Sensitivity 3
+2025-01-09 16:38:43.097 - RealTimeSTT: root - DEBUG - WebRTC VAD voice activity detection engine initialized successfully
+2025-01-09 16:38:44.977 - RealTimeSTT: torio._extension.utils - DEBUG - Loading FFmpeg6
+2025-01-09 16:38:45.098 - RealTimeSTT: torio._extension.utils - DEBUG - Failed to load FFmpeg6 extension.
+Traceback (most recent call last):
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 116, in _find_ffmpeg_extension
+    ext = _find_versionsed_ffmpeg_extension(ffmpeg_ver)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 108, in _find_versionsed_ffmpeg_extension
+    _load_lib(lib)
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 94, in _load_lib
+    torch.ops.load_library(path)
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torch/_ops.py", line 1350, in load_library
+    ctypes.CDLL(path)
+  File "/Users/ravix/.local/share/uv/python/cpython-3.12.5-macos-aarch64-none/lib/python3.12/ctypes/__init__.py", line 379, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: dlopen(/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/lib/libtorio_ffmpeg6.so, 0x0006): Library not loaded: @rpath/libavutil.58.dylib
+  Referenced from: <2CE67C06-BDEB-3F80-96E3-4F103BB9AEEC> /Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/lib/libtorio_ffmpeg6.so
+  Reason: no LC_RPATH's found
+2025-01-09 16:38:45.101 - RealTimeSTT: torio._extension.utils - DEBUG - Loading FFmpeg5
+2025-01-09 16:38:45.221 - RealTimeSTT: torio._extension.utils - DEBUG - Failed to load FFmpeg5 extension.
+Traceback (most recent call last):
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 116, in _find_ffmpeg_extension
+    ext = _find_versionsed_ffmpeg_extension(ffmpeg_ver)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 108, in _find_versionsed_ffmpeg_extension
+    _load_lib(lib)
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 94, in _load_lib
+    torch.ops.load_library(path)
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torch/_ops.py", line 1350, in load_library
+    ctypes.CDLL(path)
+  File "/Users/ravix/.local/share/uv/python/cpython-3.12.5-macos-aarch64-none/lib/python3.12/ctypes/__init__.py", line 379, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: dlopen(/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/lib/libtorio_ffmpeg5.so, 0x0006): Library not loaded: @rpath/libavutil.57.dylib
+  Referenced from: <18EE5C42-210E-3E8B-81B0-37AB03553D41> /Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/lib/libtorio_ffmpeg5.so
+  Reason: no LC_RPATH's found
+2025-01-09 16:38:45.222 - RealTimeSTT: torio._extension.utils - DEBUG - Loading FFmpeg4
+2025-01-09 16:38:45.343 - RealTimeSTT: torio._extension.utils - DEBUG - Failed to load FFmpeg4 extension.
+Traceback (most recent call last):
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 116, in _find_ffmpeg_extension
+    ext = _find_versionsed_ffmpeg_extension(ffmpeg_ver)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 108, in _find_versionsed_ffmpeg_extension
+    _load_lib(lib)
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 94, in _load_lib
+    torch.ops.load_library(path)
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torch/_ops.py", line 1350, in load_library
+    ctypes.CDLL(path)
+  File "/Users/ravix/.local/share/uv/python/cpython-3.12.5-macos-aarch64-none/lib/python3.12/ctypes/__init__.py", line 379, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: dlopen(/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/lib/libtorio_ffmpeg4.so, 0x0006): Library not loaded: @rpath/libavutil.56.dylib
+  Referenced from: <991D7190-DAB8-3DA1-A934-0A5FF14C3C78> /Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/lib/libtorio_ffmpeg4.so
+  Reason: no LC_RPATH's found
+2025-01-09 16:38:45.344 - RealTimeSTT: torio._extension.utils - DEBUG - Loading FFmpeg
+2025-01-09 16:38:45.345 - RealTimeSTT: torio._extension.utils - DEBUG - Failed to load FFmpeg extension.
+Traceback (most recent call last):
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 116, in _find_ffmpeg_extension
+    ext = _find_versionsed_ffmpeg_extension(ffmpeg_ver)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ravix/Documents/projects/experimental/deepseek-ai-assistant/.venv/lib/python3.12/site-packages/torio/_extension/utils.py", line 106, in _find_versionsed_ffmpeg_extension
+    raise RuntimeError(f"FFmpeg{version} extension is not available.")
+RuntimeError: FFmpeg extension is not available.
+2025-01-09 16:38:45.640 - RealTimeSTT: root - DEBUG - Silero VAD voice activity detection engine initialized successfully
+2025-01-09 16:38:45.641 - RealTimeSTT: root - DEBUG - Starting realtime worker
+2025-01-09 16:38:45.641 - RealTimeSTT: root - DEBUG - Waiting for main transcription model to start
+2025-01-09 16:38:46.872 - RealTimeSTT: root - DEBUG - Main transcription model ready
+2025-01-09 16:38:46.872 - RealTimeSTT: root - DEBUG - RealtimeSTT initialization completed successfully
+2025-01-09 16:38:46.872 - RealTimeSTT: root - INFO - Setting listen time
+2025-01-09 16:38:46.872 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'listening'
+2025-01-09 16:38:46.872 - RealTimeSTT: root - DEBUG - Waiting for recording start
+2025-01-09 16:38:52.255 - RealTimeSTT: root - INFO - voice activity detected
+2025-01-09 16:38:52.256 - RealTimeSTT: root - INFO - recording started
+2025-01-09 16:38:52.256 - RealTimeSTT: root - INFO - State changed from 'listening' to 'recording'
+2025-01-09 16:38:52.256 - RealTimeSTT: root - DEBUG - Waiting for recording stop
+2025-01-09 16:38:53.407 - RealTimeSTT: root - INFO - recording stopped
+2025-01-09 16:38:53.408 - RealTimeSTT: root - INFO - State changed from 'recording' to 'inactive'
+2025-01-09 16:38:53.496 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'transcribing'
+2025-01-09 16:38:53.498 - RealTimeSTT: root - DEBUG - Adding transcription request, no early transcription started
+2025-01-09 16:38:53.499 - RealTimeSTT: root - DEBUG - Receive from parent_transcription_pipe after sendiung transcription request, transcribe_count: 1
+2025-01-09 16:38:53.537 - RealTimeSTT: root - INFO - State changed from 'transcribing' to 'inactive'
+2025-01-09 16:38:53.891 - RealTimeSTT: root - DEBUG - Model tiny completed transcription in 0.39 seconds
+2025-01-09 16:38:53.891 - RealTimeSTT: root - INFO - Setting listen time
+2025-01-09 16:38:53.892 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'listening'
+2025-01-09 16:38:53.892 - RealTimeSTT: root - DEBUG - Waiting for recording start
+2025-01-09 16:38:57.502 - RealTimeSTT: root - INFO - voice activity detected
+2025-01-09 16:38:57.503 - RealTimeSTT: root - INFO - recording started
+2025-01-09 16:38:57.503 - RealTimeSTT: root - INFO - State changed from 'listening' to 'recording'
+2025-01-09 16:38:57.503 - RealTimeSTT: root - DEBUG - Waiting for recording stop
+2025-01-09 16:39:00.638 - RealTimeSTT: root - INFO - recording stopped
+2025-01-09 16:39:00.642 - RealTimeSTT: root - INFO - State changed from 'recording' to 'inactive'
+2025-01-09 16:39:00.707 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'transcribing'
+2025-01-09 16:39:00.709 - RealTimeSTT: root - DEBUG - Adding transcription request, no early transcription started
+2025-01-09 16:39:00.723 - RealTimeSTT: root - DEBUG - Receive from parent_transcription_pipe after sendiung transcription request, transcribe_count: 1
+2025-01-09 16:39:00.769 - RealTimeSTT: root - INFO - State changed from 'transcribing' to 'inactive'
+2025-01-09 16:39:01.191 - RealTimeSTT: root - DEBUG - Model tiny completed transcription in 0.48 seconds
+2025-01-09 16:39:01.191 - RealTimeSTT: root - INFO - Setting listen time
+2025-01-09 16:39:01.191 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'listening'
+2025-01-09 16:39:01.191 - RealTimeSTT: root - DEBUG - Waiting for recording start
+2025-01-09 16:39:02.942 - RealTimeSTT: root - INFO - voice activity detected
+2025-01-09 16:39:02.942 - RealTimeSTT: root - INFO - recording started
+2025-01-09 16:39:02.942 - RealTimeSTT: root - INFO - State changed from 'listening' to 'recording'
+2025-01-09 16:39:02.942 - RealTimeSTT: root - DEBUG - Waiting for recording stop
+2025-01-09 16:39:04.927 - RealTimeSTT: root - INFO - recording stopped
+2025-01-09 16:39:04.928 - RealTimeSTT: root - INFO - State changed from 'recording' to 'inactive'
+2025-01-09 16:39:04.947 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'transcribing'
+2025-01-09 16:39:04.949 - RealTimeSTT: root - DEBUG - Adding transcription request, no early transcription started
+2025-01-09 16:39:04.955 - RealTimeSTT: root - DEBUG - Receive from parent_transcription_pipe after sendiung transcription request, transcribe_count: 1
+2025-01-09 16:39:04.993 - RealTimeSTT: root - INFO - State changed from 'transcribing' to 'inactive'
+2025-01-09 16:39:05.381 - RealTimeSTT: root - DEBUG - Model tiny completed transcription in 0.43 seconds
+2025-01-09 16:39:05.382 - RealTimeSTT: root - INFO - Setting listen time
+2025-01-09 16:39:05.382 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'listening'
+2025-01-09 16:39:05.382 - RealTimeSTT: root - DEBUG - Waiting for recording start
+2025-01-09 16:39:07.295 - RealTimeSTT: root - INFO - voice activity detected
+2025-01-09 16:39:07.295 - RealTimeSTT: root - INFO - recording started
+2025-01-09 16:39:07.296 - RealTimeSTT: root - INFO - State changed from 'listening' to 'recording'
+2025-01-09 16:39:07.296 - RealTimeSTT: root - DEBUG - Waiting for recording stop
+2025-01-09 16:39:08.832 - RealTimeSTT: root - INFO - recording stopped
+2025-01-09 16:39:08.833 - RealTimeSTT: root - INFO - State changed from 'recording' to 'inactive'
+2025-01-09 16:39:08.850 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'transcribing'
+2025-01-09 16:39:08.851 - RealTimeSTT: root - DEBUG - Adding transcription request, no early transcription started
+2025-01-09 16:39:08.870 - RealTimeSTT: root - DEBUG - Receive from parent_transcription_pipe after sendiung transcription request, transcribe_count: 1
+2025-01-09 16:39:08.894 - RealTimeSTT: root - INFO - State changed from 'transcribing' to 'inactive'
+2025-01-09 16:39:09.274 - RealTimeSTT: root - DEBUG - Model tiny completed transcription in 0.42 seconds
+2025-01-09 16:39:09.274 - RealTimeSTT: root - INFO - Setting listen time
+2025-01-09 16:39:09.274 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'listening'
+2025-01-09 16:39:09.275 - RealTimeSTT: root - DEBUG - Waiting for recording start
+2025-01-09 16:39:10.557 - RealTimeSTT: root - INFO - voice activity detected
+2025-01-09 16:39:10.557 - RealTimeSTT: root - INFO - recording started
+2025-01-09 16:39:10.558 - RealTimeSTT: root - INFO - State changed from 'listening' to 'recording'
+2025-01-09 16:39:10.558 - RealTimeSTT: root - DEBUG - Waiting for recording stop
+2025-01-09 16:39:11.842 - RealTimeSTT: root - INFO - recording stopped
+2025-01-09 16:39:11.843 - RealTimeSTT: root - INFO - State changed from 'recording' to 'inactive'
+2025-01-09 16:39:11.864 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'transcribing'
+2025-01-09 16:39:11.865 - RealTimeSTT: root - DEBUG - Adding transcription request, no early transcription started
+2025-01-09 16:39:11.866 - RealTimeSTT: root - DEBUG - Receive from parent_transcription_pipe after sendiung transcription request, transcribe_count: 1
+2025-01-09 16:39:11.909 - RealTimeSTT: root - INFO - State changed from 'transcribing' to 'inactive'
+2025-01-09 16:39:12.266 - RealTimeSTT: root - DEBUG - Model tiny completed transcription in 0.40 seconds
+2025-01-09 16:39:12.267 - RealTimeSTT: root - INFO - Setting listen time
+2025-01-09 16:39:12.267 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'listening'
+2025-01-09 16:39:12.267 - RealTimeSTT: root - DEBUG - Waiting for recording start
+2025-01-09 16:39:15.491 - RealTimeSTT: root - INFO - voice activity detected
+2025-01-09 16:39:15.491 - RealTimeSTT: root - INFO - recording started
+2025-01-09 16:39:15.491 - RealTimeSTT: root - INFO - State changed from 'listening' to 'recording'
+2025-01-09 16:39:15.491 - RealTimeSTT: root - DEBUG - Waiting for recording stop
+2025-01-09 16:39:21.055 - RealTimeSTT: root - INFO - recording stopped
+2025-01-09 16:39:21.056 - RealTimeSTT: root - INFO - State changed from 'recording' to 'inactive'
+2025-01-09 16:39:21.155 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'transcribing'
+2025-01-09 16:39:21.157 - RealTimeSTT: root - DEBUG - Adding transcription request, no early transcription started
+2025-01-09 16:39:21.175 - RealTimeSTT: root - DEBUG - Receive from parent_transcription_pipe after sendiung transcription request, transcribe_count: 1
+2025-01-09 16:39:21.183 - RealTimeSTT: root - INFO - State changed from 'transcribing' to 'inactive'
+2025-01-09 16:39:21.709 - RealTimeSTT: root - DEBUG - Model tiny completed transcription in 0.55 seconds
+2025-01-09 16:39:21.710 - RealTimeSTT: root - INFO - Setting listen time
+2025-01-09 16:39:21.710 - RealTimeSTT: root - INFO - State changed from 'inactive' to 'listening'
+2025-01-09 16:39:21.710 - RealTimeSTT: root - DEBUG - Waiting for recording start
+2025-01-09 16:39:23.914 - RealTimeSTT: root - DEBUG - Receive from stdout pipe
+2025-01-09 16:39:23.914 - RealTimeSTT: root - INFO - KeyboardInterrupt in wait_audio, shutting down
+2025-01-09 16:39:23.914 - RealTimeSTT: root - DEBUG - Finishing recording thread
+2025-01-09 16:39:23.925 - RealTimeSTT: root - DEBUG - Terminating reader process
+2025-01-09 16:39:24.219 - RealTimeSTT: root - DEBUG - Terminating transcription process
+2025-01-09 16:39:24.219 - RealTimeSTT: root - DEBUG - Finishing realtime thread
+2025-01-09 16:39:24.247 - RealTimeSTT: root - INFO - KeyboardInterrupt in text() method
