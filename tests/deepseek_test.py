@@ -16,13 +16,29 @@ def test_prompt():
 
 
 def test_fill_in_the_middle_prompt():
-    """Test fill-in-the-middle prompt"""
+    """Test fill-in-the-middle prompt with an SQL query example"""
     response = fill_in_the_middle_prompt(
-        prompt="def fib(n):", suffix="    return fib(n-1) + fib(n-2)"
+        prompt="""SELECT 
+    customer_id,
+    first_name,
+    last_name,
+    """,
+        suffix="""
+FROM customers
+WHERE country = 'USA'
+ORDER BY last_name ASC;
+"""
     )
-    print("response", response)
+    
     assert isinstance(response, str)
-    assert "if" in response or "elif" in response or "else" in response
+    assert len(response) > 10  # Verify meaningful content
+    assert "SELECT" not in response  # Verify prefix is not duplicated
+    assert "FROM" not in response  # Verify suffix is not included
+    
+    # Verify SQL syntax and common patterns
+    assert any(word in response for word in ["email", "phone", "address", "city", "state"])  # Common customer columns
+    assert "," in response  # Verify proper column separation
+    assert "\n" in response  # Verify formatting
 
 
 def test_json_prompt():
