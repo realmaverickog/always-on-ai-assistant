@@ -19,6 +19,7 @@
 
 ### Base Assistant
 - 🧠 Brain: `Deepseek V3`
+- 🧠 Brain: `Deepseek V3`
 - 📝 Job (Prompt(s)): `None`
 - 💻 Active Memory (Dynamic Variables): `scratchpad.txt` + `commands/template.py`
 - 👂 Ears (STT): `RealtimeSTT`
@@ -27,7 +28,27 @@
 
 ## Commands
 
-### Assistant Conversational Commands
+### Base Assistant Chat Interface
+
+Start a conversational chat session with the base assistant:
+
+```bash
+python main_base_assistant.py chat
+```
+
+This will start an interactive chat session where you can:
+- Type messages to the assistant
+- Get spoken responses using TTS
+- Type 'exit' or 'quit' to end the session
+- Use Ctrl+C to gracefully exit
+
+The base assistant features:
+- 🧠 Brain: Deepseek V3
+- 🎤 Mouth: System TTS (can be replaced with Azure/11Labs)
+- 📝 Memory: Maintains full conversation history
+- 📊 Logging: Detailed session logs in output/ directory
+
+### Typer Assistant Conversational Commands
 
 ```bash
 python main_typer_assistant.py deep --typer-file commands/template.py --scratchpad scratchpad.txt

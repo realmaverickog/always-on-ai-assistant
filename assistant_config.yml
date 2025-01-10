@@ -1,6 +1,7 @@
 typer_assistant:
   assistant_name: Ada
   human_companion_name: Dan
+  elevenlabs_voice: WejK3H1m7MI9CHnIjW9K
 base_assistant:
   assistant_name: Ada
   human_companion_name: Dan

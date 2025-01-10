@@ -2,6 +2,7 @@ from openai import OpenAI
 import os
 import json
 from dotenv import load_dotenv
+from typing import List, Dict
 
 # Load environment variables
 load_dotenv()
@@ -110,3 +111,28 @@ def prefix_then_stop_prompt(
     )
     return response.choices[0].message.content
     # return prefix + response.choices[0].message.content
+
+
+def conversational_prompt(
+    messages: List[Dict[str, str]], 
+    model: str = DEEPSEEK_V3_MODEL
+) -> str:
+    """
+    Send a conversational prompt to DeepSeek with message history.
+    
+    Args:
+        messages: List of message dicts with 'role' and 'content' keys
+        model: The model to use, defaults to deepseek-chat
+        
+    Returns:
+        str: The model's response
+    """
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            stream=False
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        raise Exception(f"Error in conversational prompt: {str(e)}")
