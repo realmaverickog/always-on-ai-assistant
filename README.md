@@ -20,7 +20,7 @@
 ### Assistant Conversational Commands
 
 ```bash
-python main_stt.py deep --typer-file commands/template.py --scratchpad scratchpad.txt
+python main_assistant.py deep --typer-file commands/template.py --scratchpad scratchpad.txt
 ```
 
 ### One shot shell commands

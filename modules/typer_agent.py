@@ -17,7 +17,7 @@ class TyperAgent:
         self.log_file = build_file_name_session("session.log", session_id)
 
     @classmethod
-    def build_assistant(cls, typer_file: str, scratchpad: List[str]):
+    def build_agent(cls, typer_file: str, scratchpad: List[str]):
         """Create and configure a new TyperAssistant instance"""
         # Create session and logging
         session_id = create_session_logger_id()
@@ -184,3 +184,7 @@ class TyperAgent:
         except Exception as e:
             self.logger.error(f"❌ Error occurred: {str(e)}")
             raise
+
+    def speak(self, text: str):
+        """Speak the text"""
+        print(text)

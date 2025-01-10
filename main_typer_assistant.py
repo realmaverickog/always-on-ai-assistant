@@ -24,9 +24,7 @@ def deep(
     ),
 ):
     """Run STT interface that processes speech into typer commands"""
-    assistant, typer_file, scratchpad = TyperAgent.build_assistant(
-        typer_file, scratchpad
-    )
+    assistant, typer_file, scratchpad = TyperAgent.build_agent(typer_file, scratchpad)
 
     print("🎤 Speak now... (press Ctrl+C to exit)")
 
