@@ -99,3 +99,4 @@ python main.py deep --typer-file commands/template.py --scratchpad scratchpad.tx
 - LOCAL SPEECH TO TEXT: https://github.com/KoljaB/RealtimeSTT
 - faster whisper (support for RealtimeSTT) https://github.com/SYSTRAN/faster-whisper
 - examples https://github.com/KoljaB/RealtimeSTT/blob/master/tests/realtimestt_speechendpoint_binary_classified.py
+- elevenlabs voice models: https://elevenlabs.io/docs/developer-guides/models#older-models

@@ -233,14 +233,16 @@ class TyperAgent:
 
         start_time = time.time()
         model = "eleven_flash_v2_5"
+        # model="eleven_flash_v2"
+        # model = "eleven_turbo_v2"
+        # model = "eleven_turbo_v2_5"
+        # model="eleven_multilingual_v2"
         voice = get_config("typer_assistant.elevenlabs_voice")
 
         audio_generator = self.elevenlabs_client.generate(
             text=text,
             voice=voice,
             model=model,
-            # model="eleven_flash_v2"
-            # model="eleven_turbo_v2",
             stream=False,
         )
         audio_bytes = b"".join(list(audio_generator))
