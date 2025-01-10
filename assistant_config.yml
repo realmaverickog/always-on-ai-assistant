@@ -1,6 +1,9 @@
 typer_assistant:
   assistant_name: Ada
   human_companion_name: Dan
-plain_assistant:
+base_assistant:
   assistant_name: Ada
   human_companion_name: Dan
+  voice: local
+  ears: local
+  brain: deepseek-v3
