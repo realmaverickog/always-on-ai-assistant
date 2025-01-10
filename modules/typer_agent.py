@@ -10,6 +10,7 @@ from modules.deepseek import prefix_prompt
 from modules.execute_python import execute_uv_python
 from elevenlabs import play
 from elevenlabs.client import ElevenLabs
+import time
 
 
 class TyperAgent:
@@ -102,12 +103,17 @@ class TyperAgent:
 
             if command == prefix.strip():
                 self.logger.info(f"🤖 Command not found for '{text}'")
-                self.speak("Command not found")
+                self.speak("I couldn't find that command")
                 return "Command not found"
 
             # Execute the generated command
             self.logger.info(f"⚡ Executing command: `{command}`")
             output = execute_uv_python(command, typer_file)
+
+            # Conversational response
+            self.think_speak(
+                f"You've successfully executed the command: `{command}` based on the request: `{text}`"
+            )
 
             # Log results
             self.logger.info("✅ Command execution completed successfully")
@@ -189,14 +195,32 @@ class TyperAgent:
             self.logger.error(f"❌ Error occurred: {str(e)}")
             raise
 
+    def think_speak(self, text: str):
+        response_prompt_base = ""
+        with open("prompts/concise-assistant-response.xml", "r") as f:
+            response_prompt_base = f.read()
+
+        response_prompt = response_prompt_base.replace("{{latest_action}}", text)
+        response = prefix_prompt(
+            prompt=response_prompt, prefix=f"Your Conversational Response: "
+        )
+        self.logger.info(f"🤖 Response: '{response}'")
+        self.speak(response)
+
     def speak(self, text: str):
+
+        start_time = time.time()
+        model = "eleven_flash_v2_5"
+
         audio_generator = self.elevenlabs_client.generate(
             text=text,
             voice="WejK3H1m7MI9CHnIjW9K",
-            model="eleven_flash_v2_5",
+            model=model,
             # model="eleven_flash_v2"
             # model="eleven_turbo_v2",
             stream=False,
         )
         audio_bytes = b"".join(list(audio_generator))
+        duration = time.time() - start_time
+        self.logger.info(f"Model {model} completed tts in {duration:.2f} seconds")
         play(audio_bytes)
