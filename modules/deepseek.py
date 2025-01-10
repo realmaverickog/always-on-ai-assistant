@@ -60,7 +60,9 @@ def json_prompt(prompt: str, model: str = DEEPSEEK_V3_MODEL) -> dict:
     return json.loads(response.choices[0].message.content)
 
 
-def prefix_prompt(prompt: str, prefix: str, model: str = DEEPSEEK_V3_MODEL) -> str:
+def prefix_prompt(
+    prompt: str, prefix: str, model: str = DEEPSEEK_V3_MODEL, no_prefix: bool = False
+) -> str:
     """
     Send a prompt to DeepSeek with a prefix constraint and get 'prefix + response'
 
@@ -68,7 +70,7 @@ def prefix_prompt(prompt: str, prefix: str, model: str = DEEPSEEK_V3_MODEL) -> s
         prompt: The user prompt to send
         prefix: The required prefix for the response
         model: The model to use, defaults to deepseek-chat
-
+        no_prefix: If True, the prefix is not added to the response
     Returns:
         str: The model's response constrained by the prefix
     """
@@ -78,7 +80,10 @@ def prefix_prompt(prompt: str, prefix: str, model: str = DEEPSEEK_V3_MODEL) -> s
     ]
 
     response = client.chat.completions.create(model=model, messages=messages)
-    return prefix + response.choices[0].message.content
+    if no_prefix:
+        return response.choices[0].message.content
+    else:
+        return prefix + response.choices[0].message.content
 
 
 def prefix_then_stop_prompt(

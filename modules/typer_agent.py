@@ -1,6 +1,7 @@
 from typing import List
 import os
 import logging
+from modules.assistant_config import get_config
 from modules.utils import (
     build_file_name_session,
     create_session_logger_id,
@@ -19,6 +20,8 @@ class TyperAgent:
         self.session_id = session_id
         self.log_file = build_file_name_session("session.log", session_id)
         self.elevenlabs_client = ElevenLabs(api_key=os.getenv("ELEVEN_API_KEY"))
+        self.previous_successful_requests = []
+        self.previous_responses = []
 
     @classmethod
     def build_agent(cls, typer_file: str, scratchpad: List[str]):
@@ -92,6 +95,15 @@ class TyperAgent:
 
     def process_text(self, text: str, typer_file: str, scratchpad: List[str]) -> str:
         """Process text input and execute as typer command"""
+
+        # don't act on the assistants last input
+        if self.previous_responses and text in self.previous_responses[-1]:
+            self.logger.info(
+                f"🤖 Previous response found for '{text}'",
+                extra={"skip_stdout": True},
+            )
+            return
+
         try:
             # Build fresh prompt with current state
             formatted_prompt = self.build_prompt(typer_file, scratchpad, text)
@@ -200,13 +212,19 @@ class TyperAgent:
         with open("prompts/concise-assistant-response.xml", "r") as f:
             response_prompt_base = f.read()
 
+        assistant_name = get_config("typer_assistant.assistant_name")
+        human_companion_name = get_config("typer_assistant.human_companion_name")
+
         response_prompt = response_prompt_base.replace("{{latest_action}}", text)
-        response_prompt = response_prompt.replace("{{human_companion_name}}", "Dan")
         response_prompt = response_prompt.replace(
-            "{{personal_ai_assistant_name}}", "Ada"
+            "{{human_companion_name}}", human_companion_name
         )
+        response_prompt = response_prompt.replace(
+            "{{personal_ai_assistant_name}}", assistant_name
+        )
+        prompt_prefix = f"Your Conversational Response: "
         response = prefix_prompt(
-            prompt=response_prompt, prefix=f"Your Conversational Response: "
+            prompt=response_prompt, prefix=prompt_prefix, no_prefix=True
         )
         self.logger.info(f"🤖 Response: '{response}'")
         self.speak(response)

@@ -20,4 +20,5 @@ dependencies = [
     "rich>=13.9.4",
     "realtimestt>=0.3.93",
     "elevenlabs>=1.50.3",
+    "dpath>=2.2.0",
 ]
