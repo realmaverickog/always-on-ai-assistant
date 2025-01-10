@@ -3,8 +3,12 @@ import logging
 import os
 from modules.deepseek import conversational_prompt
 from modules.utils import build_file_name_session
-from RealtimeTTS import TextToAudioStream, SystemEngine, ElevenlabsEngine
+from RealtimeTTS import TextToAudioStream, SystemEngine
+from elevenlabs import play
+from elevenlabs.client import ElevenLabs
+import pyttsx3
 import time
+from modules.assistant_config import get_config
 
 
 class PlainAssistant:
@@ -13,7 +17,9 @@ class PlainAssistant:
         self.session_id = session_id
         self.conversation_history = []
         self.engine = SystemEngine()  # Can be replaced with other engines
-        self.stream = TextToAudioStream(self.engine)
+        self.stream = TextToAudioStream(
+            self.engine, frames_per_buffer=256, playout_chunk_size=1024
+        )
 
     def process_text(self, text: str) -> str:
         """Process text input and generate response"""
@@ -43,6 +49,7 @@ class PlainAssistant:
             self.logger.info(f"🔊 Speaking: {text}")
             self.stream.feed(text)
             self.stream.play()
+            self.logger.info(f"🔊 Spoken: {text}")
 
         except Exception as e:
             self.logger.error(f"❌ Error in speech synthesis: {str(e)}")

@@ -5,6 +5,7 @@ typer_assistant:
 base_assistant:
   assistant_name: Ada
   human_companion_name: Dan
-  voice: local
-  ears: local
+  voice: local # local, realtime-tts, elevenlabs
+  ears: realtime-stt
   brain: deepseek-v3
+  elevenlabs_voice: WejK3H1m7MI9CHnIjW9K
