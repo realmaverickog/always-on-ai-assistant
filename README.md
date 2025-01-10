@@ -60,9 +60,11 @@ python main.py deep --typer-file commands/template.py --scratchpad scratchpad.tx
 - [x] add arbitrary 'scratchpad' files (make it a list)
 - [x] add ears (STT)
 - [] add minimal mouth (TTS) to summarize what was done (no need for brain here just a simple conversational, short summary)
-- [] add previous command map history. 1. 'deep go ahead and backup the db' -> 'backup-data db/'\n2. '...'
+- [] add a minimal barebones stt, brain, tts personal ai assistant.
+- [defer] add previous command map history. 1. 'deep go ahead and backup the db' -> 'backup-data db/'\n2. '...'
   - this lets us say refer to previous commands.
 
 ## Resources
 - LOCAL SPEECH TO TEXT: https://github.com/KoljaB/RealtimeSTT
 - faster whisper (support for RealtimeSTT) https://github.com/SYSTRAN/faster-whisper
+- examples https://github.com/KoljaB/RealtimeSTT/blob/master/tests/realtimestt_speechendpoint_binary_classified.py
