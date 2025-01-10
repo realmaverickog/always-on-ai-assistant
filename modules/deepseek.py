@@ -114,24 +114,27 @@ def prefix_then_stop_prompt(
 
 
 def conversational_prompt(
-    messages: List[Dict[str, str]], 
-    model: str = DEEPSEEK_V3_MODEL
+    messages: List[Dict[str, str]],
+    system_prompt: str = "You are a helpful conversational assistant.",
+    model: str = DEEPSEEK_V3_MODEL,
 ) -> str:
     """
     Send a conversational prompt to DeepSeek with message history.
-    
+
     Args:
         messages: List of message dicts with 'role' and 'content' keys
         model: The model to use, defaults to deepseek-chat
-        
+
     Returns:
         str: The model's response
     """
     try:
+        messages = [
+            {"role": "system", "content": system_prompt},
+            *messages,
+        ]
         response = client.chat.completions.create(
-            model=model,
-            messages=messages,
-            stream=False
+            model=model, messages=messages, stream=False
         )
         return response.choices[0].message.content
     except Exception as e:

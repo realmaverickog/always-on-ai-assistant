@@ -106,8 +106,11 @@ def deep(
             if assistant_name.lower() not in text.lower():
                 print(f"🤖 Not {assistant_name} - ignoring")
                 return
+
+            recorder.stop()
             output = assistant.process_text(text, typer_file, scratchpad)
             print(f"🤖 Response:\n{output}")
+            recorder.start()
         except Exception as e:
             print(f"❌ Error: {str(e)}")
 

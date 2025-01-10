@@ -1,5 +1,6 @@
 from RealtimeSTT import AudioToTextRecorder
 from typing import List
+from modules.assistant_config import get_config
 from modules.base_assistant import PlainAssistant
 from modules.utils import create_session_logger_id, setup_logging
 import typer
@@ -27,7 +28,6 @@ def chat():
     # Configure STT recorder
     recorder = AudioToTextRecorder(
         spinner=True,
-        compute_type="float32",
         model="tiny.en",
         language="en",
         print_transcription_time=True,
@@ -36,7 +36,11 @@ def chat():
     def process_text(text):
         """Process user speech input"""
         try:
-            logger.info(f"🎤 Heard: {text}")
+
+            assistant_name = get_config("base_assistant.assistant_name")
+            if assistant_name.lower() not in text.lower():
+                logger.info(f"🤖 Not {assistant_name} - ignoring")
+                return
 
             # Check for exit commands
             if text.lower() in ["exit", "quit"]:
@@ -44,8 +48,10 @@ def chat():
                 return False
 
             # Process input and get response
+            recorder.stop()
             response = assistant.process_text(text)
             logger.info(f"🤖 Response: {response}")
+            recorder.start()
 
             return True
 
@@ -60,6 +66,7 @@ def chat():
 
     except KeyboardInterrupt:
         logger.info("👋 Session ended by user")
+        raise KeyboardInterrupt
     except Exception as e:
         logger.error(f"❌ Error occurred: {str(e)}")
         raise

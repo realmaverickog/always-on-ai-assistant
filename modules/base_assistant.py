@@ -16,14 +16,39 @@ class PlainAssistant:
         self.logger = logger
         self.session_id = session_id
         self.conversation_history = []
-        self.engine = SystemEngine()  # Can be replaced with other engines
-        self.stream = TextToAudioStream(
-            self.engine, frames_per_buffer=256, playout_chunk_size=1024
-        )
+        
+        # Get voice configuration
+        self.voice_type = get_config("base_assistant.voice")
+        self.elevenlabs_voice = get_config("base_assistant.elevenlabs_voice")
+        
+        # Initialize appropriate TTS engine
+        if self.voice_type == "local":
+            self.logger.info("🔊 Initializing local TTS engine")
+            self.engine = pyttsx3.init()
+            self.engine.setProperty('rate', 150)  # Speed of speech
+            self.engine.setProperty('volume', 1.0)  # Volume level
+        elif self.voice_type == "realtime-tts":
+            self.logger.info("🔊 Initializing RealtimeTTS engine")
+            self.engine = SystemEngine()
+            self.stream = TextToAudioStream(
+                self.engine, 
+                frames_per_buffer=256, 
+                playout_chunk_size=1024
+            )
+        elif self.voice_type == "elevenlabs":
+            self.logger.info("🔊 Initializing ElevenLabs TTS engine")
+            self.elevenlabs_client = ElevenLabs(api_key=os.getenv("ELEVEN_API_KEY"))
+        else:
+            raise ValueError(f"Unsupported voice type: {self.voice_type}")
 
     def process_text(self, text: str) -> str:
         """Process text input and generate response"""
         try:
+            # Check if text matches our last response
+            if self.conversation_history and text.strip().lower() in self.conversation_history[-1]["content"].lower():
+                self.logger.info("🤖 Ignoring own speech input")
+                return ""
+
             # Add user message to conversation history
             self.conversation_history.append({"role": "user", "content": text})
 
@@ -44,11 +69,27 @@ class PlainAssistant:
             raise
 
     def speak(self, text: str):
-        """Convert text to speech and play it"""
+        """Convert text to speech using configured engine"""
         try:
             self.logger.info(f"🔊 Speaking: {text}")
-            self.stream.feed(text)
-            self.stream.play()
+            
+            if self.voice_type == "local":
+                self.engine.say(text)
+                self.engine.runAndWait()
+                
+            elif self.voice_type == "realtime-tts":
+                self.stream.feed(text)
+                self.stream.play()
+                
+            elif self.voice_type == "elevenlabs":
+                audio = self.elevenlabs_client.generate(
+                    text=text,
+                    voice=self.elevenlabs_voice,
+                    model="eleven_turbo_v2",
+                    stream=False
+                )
+                play(audio)
+                
             self.logger.info(f"🔊 Spoken: {text}")
 
         except Exception as e:
