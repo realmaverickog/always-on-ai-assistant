@@ -194,6 +194,23 @@ wheels = [
 ]
 
 [[package]]
+name = "elevenlabs"
+version = "1.50.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "pydantic-core" },
+    { name = "requests" },
+    { name = "typing-extensions" },
+    { name = "websockets" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d8/27/44aa5109e76ab41f4695fa1fbc5473e2d158fec89cedce2085520a9e0431/elevenlabs-1.50.3.tar.gz", hash = "sha256:fa6ad18be07f4b24106dd549cb97c9a72bb76fbb943ce9078a44d13abe3d3154", size = 101709 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/48/43/77c7266f50b2e2eca5b155f15a35ef2a30cbd377d02a7f3ca32c077cb072/elevenlabs-1.50.3-py3-none-any.whl", hash = "sha256:13622d27f5ccd4c8bc793abbc252d43cdddc261805f378ae9a032a6458687589", size = 228427 },
+]
+
+[[package]]
 name = "enum34"
 version = "1.1.10"
 source = { registry = "https://pypi.org/simple" }
@@ -950,6 +967,7 @@ version = "0.1.1"
 source = { virtual = "." }
 dependencies = [
     { name = "anthropic" },
+    { name = "elevenlabs" },
     { name = "google-generativeai" },
     { name = "llm" },
     { name = "llm-claude-3" },
@@ -968,6 +986,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "anthropic", specifier = ">=0.39.0" },
+    { name = "elevenlabs", specifier = ">=1.50.3" },
     { name = "google-generativeai", specifier = ">=0.8.3" },
     { name = "llm", specifier = ">=0.18" },
     { name = "llm-claude-3", specifier = ">=0.9" },

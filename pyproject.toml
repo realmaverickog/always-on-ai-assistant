@@ -19,4 +19,5 @@ dependencies = [
     "typer>=0.13.1",
     "rich>=13.9.4",
     "realtimestt>=0.3.93",
+    "elevenlabs>=1.50.3",
 ]

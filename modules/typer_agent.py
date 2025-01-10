@@ -8,6 +8,8 @@ from modules.utils import (
 )
 from modules.deepseek import prefix_prompt
 from modules.execute_python import execute_uv_python
+from elevenlabs import play
+from elevenlabs.client import ElevenLabs
 
 
 class TyperAgent:
@@ -15,6 +17,7 @@ class TyperAgent:
         self.logger = logger
         self.session_id = session_id
         self.log_file = build_file_name_session("session.log", session_id)
+        self.elevenlabs_client = ElevenLabs(api_key=os.getenv("ELEVEN_API_KEY"))
 
     @classmethod
     def build_agent(cls, typer_file: str, scratchpad: List[str]):
@@ -99,6 +102,7 @@ class TyperAgent:
 
             if command == prefix.strip():
                 self.logger.info(f"🤖 Command not found for '{text}'")
+                self.speak("Command not found")
                 return "Command not found"
 
             # Execute the generated command
@@ -186,5 +190,13 @@ class TyperAgent:
             raise
 
     def speak(self, text: str):
-        """Speak the text"""
-        print(text)
+        audio_generator = self.elevenlabs_client.generate(
+            text=text,
+            voice="WejK3H1m7MI9CHnIjW9K",
+            model="eleven_flash_v2_5",
+            # model="eleven_flash_v2"
+            # model="eleven_turbo_v2",
+            stream=False,
+        )
+        audio_bytes = b"".join(list(audio_generator))
+        play(audio_bytes)
