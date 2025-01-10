@@ -99,7 +99,7 @@ def deep(
     def process_text(text):
         print(f"\n🎤 Heard: {text}")
         try:
-            if "deep" not in text.lower():
+            if "Ada" not in text.lower():
                 print("🤖 Not deep - ignoring")
                 return
             output = assistant.process_text(text, typer_file, scratchpad)

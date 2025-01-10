@@ -201,6 +201,10 @@ class TyperAgent:
             response_prompt_base = f.read()
 
         response_prompt = response_prompt_base.replace("{{latest_action}}", text)
+        response_prompt = response_prompt.replace("{{human_companion_name}}", "Dan")
+        response_prompt = response_prompt.replace(
+            "{{personal_ai_assistant_name}}", "Ada"
+        )
         response = prefix_prompt(
             prompt=response_prompt, prefix=f"Your Conversational Response: "
         )
