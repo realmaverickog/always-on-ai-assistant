@@ -5,14 +5,24 @@
 - `cp .env.sample .env`
   - Update with your keys
 - `uv sync`
+- (optional) install python 3.11 (`uv python install 3.11`)
 
 
 ## Assistant Architecture
+
+### Typer Assistant
 - 🧠 Brain: `Deepseek V3`
 - 📝 Job (Prompt(s)): `prompts/typer-commands.xml`
 - 💻 Active Memory (Dynamic Variables): `scratchpad.txt` + `commands/template.py`
-- 👂 Ears (STT): `OpenAI Whisper v3` 
-- 🎤 Mouth (TTS): `ElevenLabs Turbo`
+- 👂 Ears (STT): `RealtimeSTT`
+- 🎤 Mouth (TTS): `ElevenLabs (Flash 2.5)`
+
+### Base Assistant
+- 🧠 Brain: `Deepseek V3`
+- 📝 Job (Prompt(s)): `None`
+- 💻 Active Memory (Dynamic Variables): `scratchpad.txt` + `commands/template.py`
+- 👂 Ears (STT): `RealtimeSTT`
+- 🎤 Mouth (TTS): `RealtimeTTS`
 
 
 ## Commands

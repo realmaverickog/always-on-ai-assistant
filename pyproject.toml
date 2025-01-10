@@ -3,7 +3,7 @@ name = "paic-python-starter"
 version = "0.1.1"
 description = "PAIC Python Starter"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10,<3.12"
 dependencies = [
     "anthropic>=0.39.0",
     "google-generativeai>=0.8.3",
@@ -21,4 +21,5 @@ dependencies = [
     "realtimestt>=0.3.93",
     "elevenlabs>=1.50.3",
     "dpath>=2.2.0",
+    "realtimetts[all]>=0.1.3",
 ]
