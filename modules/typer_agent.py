@@ -24,26 +24,40 @@ class TyperAgent:
         self.previous_successful_requests = []
         self.previous_responses = []
 
+    def _validate_markdown(self, file_path: str) -> bool:
+        """Validate that file is markdown and has expected structure"""
+        if not file_path.endswith(('.md', '.markdown')):
+            self.logger.error(f"📄 Scratchpad file {file_path} must be a markdown file")
+            return False
+            
+        try:
+            with open(file_path, 'r') as f:
+                content = f.read()
+                # Basic validation - could be expanded based on needs
+                if not content.strip():
+                    self.logger.warning("📄 Markdown file is empty")
+                return True
+        except Exception as e:
+            self.logger.error(f"📄 Error reading markdown file: {str(e)}")
+            return False
+
     @classmethod
     def build_agent(cls, typer_file: str, scratchpad: List[str]):
         """Create and configure a new TyperAssistant instance"""
-        # Create session and logging
         session_id = create_session_logger_id()
         logger = setup_logging(session_id)
         logger.info(f"🚀 Starting STT session {session_id}")
 
-        # Verify files exist
         if not os.path.exists(typer_file):
             logger.error(f"📂 Typer file {typer_file} does not exist")
             raise FileNotFoundError(f"Typer file {typer_file} does not exist")
 
-        # Only check first scratchpad file since that's all we need
-        if scratchpad and not os.path.exists(scratchpad[0]):
-            logger.error(f"📄 Scratchpad file {scratchpad[0]} does not exist")
-            raise FileNotFoundError(f"Scratchpad file {scratchpad[0]} does not exist")
+        # Validate markdown scratchpad
+        agent = cls(logger, session_id)
+        if scratchpad and not agent._validate_markdown(scratchpad[0]):
+            raise ValueError(f"Invalid markdown scratchpad file: {scratchpad[0]}")
 
-        # Create and return assistant with single scratchpad path
-        return cls(logger, session_id), typer_file, scratchpad[0]
+        return agent, typer_file, scratchpad[0]
 
     def build_prompt(
         self, typer_file: str, scratchpad: str, context_files: List[str], prompt_text: str
@@ -117,25 +131,28 @@ class TyperAgent:
                 self.speak("I couldn't find that command")
                 return "Command not found"
 
-            # Handle different modes
+            # Handle different modes with markdown formatting
             assistant_name = get_config("typer_assistant.assistant_name")
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
             if mode == "default":
-                result = f"---\n{command}\n---"
-                append_text = f"\n\n{timestamp} - {assistant_name} generated:\n{result}"
+                result = f"\n## Command Generated ({timestamp})\n\n> Request: {text}\n\n```bash\n{command}\n```"
                 with open(scratchpad, "a") as f:
-                    f.write(append_text)
+                    f.write(result)
                 return result
 
             elif mode == "execute":
                 self.logger.info(f"⚡ Executing command: `{command}`")
                 output = execute_uv_python(command, typer_file)
                 
-                result = f"---\n{command}\n{output}\n---"
-                append_text = f"\n\n{timestamp} - {assistant_name} executed and generated:\n{result}"
+                result = (
+                    f"\n## Command Executed ({timestamp})\n\n"
+                    f"> Request: {text}\n\n"
+                    f"* **Command:** \n```bash\n{command}\n```\n\n"
+                    f"* **Output:** \n```\n{output}\n```"
+                )
                 with open(scratchpad, "a") as f:
-                    f.write(append_text)
+                    f.write(result)
                 return output
 
             elif mode == "execute-no-scratch":
