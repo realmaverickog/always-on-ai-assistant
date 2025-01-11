@@ -51,7 +51,7 @@ The base assistant features:
 ### Typer Assistant Conversational Commands
 
 ```bash
-python main_typer_assistant.py deep --typer-file commands/template.py --scratchpad scratchpad.txt
+python main_typer_assistant.py awaken --typer-file commands/template.py --scratchpad scratchpad.txt --mode default
 ```
 
 ### One shot shell commands

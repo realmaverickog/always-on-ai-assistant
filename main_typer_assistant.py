@@ -16,7 +16,7 @@ def ping():
 
 
 @app.command()
-def deep(
+def awaken(
     typer_file: str = typer.Option(
         ..., "--typer-file", "-f", help="Path to typer commands file"
     ),
@@ -27,14 +27,15 @@ def deep(
         [], "--context", "-c", help="List of context files"
     ),
     mode: str = typer.Option(
-        "default", 
-        "--mode", 
-        "-m", 
-        help="Execution mode: default (no exec), execute (exec + scratch), execute-no-scratch (exec only)"
+        "default",
+        "--mode",
+        "-m",
+        help="Execution mode: default (no exec), execute (exec + scratch), execute-no-scratch (exec only)",
     ),
 ):
     """Run STT interface that processes speech into typer commands"""
-    assistant, typer_file, scratchpad = TyperAgent.build_agent(typer_file, [scratchpad] + context_files)
+    # Remove the list concatenation - pass scratchpad as a single string
+    assistant, typer_file, _ = TyperAgent.build_agent(typer_file, [scratchpad])
 
     print("🎤 Speak now... (press Ctrl+C to exit)")
 
@@ -117,7 +118,9 @@ def deep(
                 return
 
             recorder.stop()
-            output = assistant.process_text(text, typer_file, scratchpad, context_files, mode)
+            output = assistant.process_text(
+                text, typer_file, scratchpad, context_files, mode
+            )
             print(f"🤖 Response:\n{output}")
             recorder.start()
         except Exception as e:

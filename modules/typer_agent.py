@@ -37,13 +37,13 @@ class TyperAgent:
             logger.error(f"📂 Typer file {typer_file} does not exist")
             raise FileNotFoundError(f"Typer file {typer_file} does not exist")
 
-        for file_path in scratchpad:
-            if not os.path.exists(file_path):
-                logger.error(f"📄 Scratchpad file {file_path} does not exist")
-                raise FileNotFoundError(f"Scratchpad file {file_path} does not exist")
+        # Only check first scratchpad file since that's all we need
+        if scratchpad and not os.path.exists(scratchpad[0]):
+            logger.error(f"📄 Scratchpad file {scratchpad[0]} does not exist")
+            raise FileNotFoundError(f"Scratchpad file {scratchpad[0]} does not exist")
 
-        # Create and return assistant
-        return cls(logger, session_id), typer_file, scratchpad
+        # Create and return assistant with single scratchpad path
+        return cls(logger, session_id), typer_file, scratchpad[0]
 
     def build_prompt(
         self, typer_file: str, scratchpad: str, context_files: List[str], prompt_text: str
