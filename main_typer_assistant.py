@@ -78,7 +78,7 @@ def awaken(
         spinner=False,
         # wake_words="deep"
         # realtime_processing_pause=0.3,
-        # post_speech_silence_duration=0.3,
+        post_speech_silence_duration=1.5,
         # compute_type="int8",
         compute_type="float32",
         model="tiny.en",  # VERY fast (.5s), but not accurate
