@@ -86,7 +86,8 @@ def awaken(
         # Beam size controls how many alternative transcription paths are explored
         # Higher values = more accurate but slower, lower values = faster but less accurate
         # beam_size=3,
-        beam_size=5,
+        # beam_size=5,
+        beam_size=8,
         # Batch size controls how many audio chunks are processed together
         # Higher values = faster processing but uses more memory, lower values = slower processing but uses less memory
         batch_size=25,
