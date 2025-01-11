@@ -247,3 +247,63 @@ uv run python commands/template.py  create-user Dan --role admin
 User 'Dan' created with role 'admin'.
 
 ```
+
+## Ada Executed Command (2025-01-11 10:48:02)
+
+> Request: All right, Ada, go ahead and ping the server.
+
+**Ada's Command:** 
+```bash
+uv run python commands/template.py  ping-server
+```
+
+**Output:** 
+```
+Server pinged. Response time: 96 ms.
+
+```
+
+## Ada Executed Command (2025-01-11 10:48:31)
+
+> Request: Ada, ping the server again, wait for a response.
+
+**Ada's Command:** 
+```bash
+uv run python commands/template.py  ping-server --wait
+```
+
+**Output:** 
+```
+Server pinged. Response time: 94 ms. (Waited for a response.)
+
+```
+
+## Ada Executed Command (2025-01-11 10:49:13)
+
+> Request: Ada, show our config, use verbose mode.
+
+**Ada's Command:** 
+```bash
+uv run python commands/template.py  show-config --verbose
+```
+
+**Output:** 
+```
+Verbose config:
+{
+  "typer_assistant": {
+    "assistant_name": "Ada",
+    "human_companion_name": "Dan",
+    "elevenlabs_voice": "WejK3H1m7MI9CHnIjW9K"
+  },
+  "base_assistant": {
+    "assistant_name": "Ada",
+    "human_companion_name": "Dan",
+    "voice": "elevenlabs",
+    "ears": "realtime-stt",
+    "brain": "deepseek-v3",
+    "elevenlabs_voice": "WejK3H1m7MI9CHnIjW9K"
+  }
+}
+
+```
