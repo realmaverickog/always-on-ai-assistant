@@ -316,25 +316,44 @@ def delete_user(
 # -----------------------------------------------------
 @app.command()
 def generate_report(
-    report_type: str = typer.Argument(..., help="Type of report to generate"),
+    table_name: str = typer.Argument(..., help="Name of table to generate report from"),
     output_file: str = typer.Option("report.json", "--output", help="Output file name"),
 ):
     """
-    Generates a report of a specified type to a given file.
+    Generates a report from an existing database table and saves it to a file.
     """
-    # Simple mock data. Real logic might gather from DB, etc.
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # Get all data from the specified table
+    cur.execute(f"SELECT * FROM {table_name}")
+    rows = cur.fetchall()
+
+    # Get column names from cursor description
+    columns = [description[0] for description in cur.description]
+
+    # Convert rows to list of dicts with column names
+    data = []
+    for row in rows:
+        data.append(dict(zip(columns, row)))
+
     report_data = {
-        "report_type": report_type,
+        "table": table_name,
         "timestamp": datetime.now().isoformat(),
-        "data": [f"Sample entry {i}" for i in range(10)],
+        "columns": columns,
+        "row_count": len(rows),
+        "data": data,
     }
 
     with open(output_file, "w") as f:
         json.dump(report_data, f, indent=2)
 
-    result = f"Report '{report_type}' generated and saved to {output_file}."
+    conn.close()
+
+    result = f"Report for table '{table_name}' generated and saved to {output_file}."
     typer.echo(result)
-    return result
+    typer.echo(json.dumps(report_data, indent=2))
+    return report_data
 
 
 # -----------------------------------------------------
@@ -516,82 +535,6 @@ def filter_records(
 
 
 # -----------------------------------------------------
-# 13) validate_schema
-# -----------------------------------------------------
-@app.command()
-def validate_schema(
-    schema_file: str = typer.Argument(..., help="Path to schema file"),
-    data_file: str = typer.Option("", "--data", help="Path to data file to check"),
-    strict: bool = typer.Option(True, "--strict", help="Enforce strict validation"),
-):
-    """
-    Validates a schema, optionally checking a data file with strict mode.
-    """
-    if not os.path.isfile(schema_file):
-        msg = f"Schema file {schema_file} not found."
-        typer.echo(msg)
-        return msg
-
-    # Mock schema validation
-    if data_file:
-        validation_msg = f"Data in {data_file} validated against schema {schema_file}"
-        if strict:
-            validation_msg += " with strict mode on."
-        else:
-            validation_msg += " with strict mode off."
-    else:
-        validation_msg = f"Schema {schema_file} is valid (no data file to check)."
-
-    typer.echo(validation_msg)
-    return validation_msg
-
-
-# -----------------------------------------------------
-# 14) sync_remotes
-# -----------------------------------------------------
-@app.command()
-def sync_remotes(
-    remote_name: str = typer.Argument(..., help="Name of remote to sync"),
-    force: bool = typer.Option(
-        False, "--force", help="Force syncing without prompting"
-    ),
-):
-    """
-    Syncs with a remote repository, optionally forcing the operation.
-    """
-    if force:
-        result = f"Remote '{remote_name}' synced forcibly."
-    else:
-        result = f"Remote '{remote_name}' synced with confirmation."
-    typer.echo(result)
-    return result
-
-
-# -----------------------------------------------------
-# 15) simulate_run
-# -----------------------------------------------------
-@app.command()
-def simulate_run(
-    scenario: str = typer.Argument(..., help="Simulation scenario"),
-    cycles: int = typer.Option(5, "--cycles", help="Number of cycles to simulate"),
-    debug: bool = typer.Option(False, "--debug", help="Show debug output"),
-):
-    """
-    Simulates a scenario for a given number of cycles, optionally showing debug output.
-    """
-    output = []
-    for i in range(cycles):
-        step_result = f"Cycle {i+1}/{cycles} in scenario '{scenario}'."
-        if debug:
-            step_result += " [DEBUG INFO]"
-        output.append(step_result)
-
-    result = "\n".join(output)
-    typer.echo(result)
-    return result
-
-
-# -----------------------------------------------------
 # 16) compare_files
 # -----------------------------------------------------
 @app.command()
@@ -694,97 +637,6 @@ def decrypt_data(
 
 
 # -----------------------------------------------------
-# 19) transform_data
-# -----------------------------------------------------
-@app.command()
-def transform_data(
-    input_file: str = typer.Argument(..., help="File to transform"),
-    output_format: str = typer.Option("json", "--format", help="Output format"),
-    columns: str = typer.Option(
-        None, "--columns", help="Comma-separated columns to extract"
-    ),
-):
-    """
-    Transforms data from a file into a specified format, optionally extracting columns.
-    For demonstration, we'll assume the file is a CSV and we transform it to JSON or vice versa.
-    """
-    if not os.path.isfile(input_file):
-        msg = f"Input file {input_file} does not exist."
-        typer.echo(msg)
-        return msg
-
-    # We'll assume input_file is always CSV for the sake of a simple demo.
-    extracted_cols = columns.split(",") if columns else None
-
-    # Read CSV
-    with open(input_file, "r", newline="") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-
-    if extracted_cols:
-        # Filter out only the desired columns
-        filtered_rows = []
-        for row in rows:
-            filtered = {col: row[col] for col in extracted_cols if col in row}
-            filtered_rows.append(filtered)
-        rows = filtered_rows
-
-    if output_format.lower() == "json":
-        # Transform to JSON
-        json_output = os.path.splitext(input_file)[0] + ".json"
-        with open(json_output, "w") as f:
-            json.dump(rows, f, indent=2)
-        result = f"Data transformed to JSON and saved at {json_output}."
-        typer.echo(result)
-        return result
-    else:
-        # If some other format, we’ll mock it by re-saving CSV
-        csv_output = os.path.splitext(input_file)[0] + "_transformed.csv"
-        if rows and isinstance(rows[0], dict):
-            fieldnames = rows[0].keys()
-            with open(csv_output, "w", newline="") as f:
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerows(rows)
-            result = f"Data transformed to CSV (mock) and saved at {csv_output}."
-        else:
-            result = "No data to transform."
-        typer.echo(result)
-        return result
-
-
-# -----------------------------------------------------
-# 20) upload_changes
-# -----------------------------------------------------
-@app.command()
-def upload_changes(
-    source_dir: str = typer.Argument(..., help="Directory of changes to upload"),
-    incremental: bool = typer.Option(False, "--incremental", help="Incremental upload"),
-    confirm: bool = typer.Option(False, "--confirm", help="Skip confirmation prompt"),
-):
-    """
-    Uploads changes from a directory, optionally in incremental mode.
-    """
-    if not os.path.isdir(source_dir):
-        msg = f"Source directory '{source_dir}' not found."
-        typer.echo(msg)
-        return msg
-
-    if not confirm:
-        msg = (
-            f"Confirmation needed to upload changes from '{source_dir}'. Use --confirm."
-        )
-        typer.echo(msg)
-        return msg
-
-    # Mock upload
-    mode = "incremental" if incremental else "full"
-    result = f"Changes from '{source_dir}' uploaded in {mode} mode."
-    typer.echo(result)
-    return result
-
-
-# -----------------------------------------------------
 # 21) migrate_database
 # -----------------------------------------------------
 @app.command()
@@ -810,141 +662,6 @@ def migrate_database(
 
     shutil.copy(old_db, new_db)
     result = f"Database migrated from {old_db} to {new_db}."
-    typer.echo(result)
-    return result
-
-
-# -----------------------------------------------------
-# 22) health_check
-# -----------------------------------------------------
-@app.command()
-def health_check(
-    service_name: str = typer.Argument(..., help="Service to check"),
-    timeout: int = typer.Option(30, "--timeout", help="Timeout in seconds"),
-    alert: bool = typer.Option(False, "--alert", help="Send alert if check fails"),
-):
-    """
-    Checks the health of a service within a specified timeout, optionally sending alerts.
-    """
-    # Mock check
-    is_healthy = random.choice([True, False])
-    if is_healthy:
-        result = f"Service '{service_name}' is healthy. (Timeout={timeout}s)"
-    else:
-        result = f"Service '{service_name}' is NOT healthy."
-        if alert:
-            result += " Alert has been sent!"
-    typer.echo(result)
-    return result
-
-
-# -----------------------------------------------------
-# 23) search_logs
-# -----------------------------------------------------
-@app.command()
-def search_logs(
-    keyword: str = typer.Argument(..., help="Keyword to search"),
-    log_file: str = typer.Option("system.log", "--log", help="Log file to search in"),
-    case_sensitive: bool = typer.Option(
-        False, "--case-sensitive", help="Enable case-sensitive search"
-    ),
-):
-    """
-    Searches for a keyword in a log file, optionally using case-sensitive mode.
-    """
-    if not os.path.isfile(log_file):
-        msg = f"Log file '{log_file}' not found."
-        typer.echo(msg)
-        return msg
-
-    with open(log_file, "r") as f:
-        lines = f.readlines()
-
-    matches = []
-    for line in lines:
-        if case_sensitive:
-            if keyword in line:
-                matches.append(line)
-        else:
-            if keyword.lower() in line.lower():
-                matches.append(line)
-
-    result = f"Found {len(matches)} occurrences of '{keyword}' in {log_file}."
-    typer.echo(result)
-    return result
-
-
-# -----------------------------------------------------
-# 24) stats_by_date
-# -----------------------------------------------------
-@app.command()
-def stats_by_date(
-    date: str = typer.Argument(..., help="Date in YYYY-MM-DD to query stats"),
-    show_raw: bool = typer.Option(False, "--show-raw", help="Display raw data"),
-):
-    """
-    Shows statistics for a specific date, optionally displaying raw data.
-    """
-    # Mock reading from logs table or similar
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM logs WHERE created_at LIKE ?", (f"{date}%",))
-    count = cur.fetchone()[0]
-    conn.close()
-
-    result = f"Logs for {date}: {count} entries found."
-    if show_raw:
-        result += " (Raw data would be displayed here.)"
-    typer.echo(result)
-    return result
-
-
-# -----------------------------------------------------
-# 25) publish_update
-# -----------------------------------------------------
-@app.command()
-def publish_update(
-    version: str = typer.Argument(..., help="Version tag to publish"),
-    channel: str = typer.Option("stable", "--channel", help="Release channel"),
-    note: str = typer.Option("", "--note", help="Release note or description"),
-):
-    """
-    Publishes an update to a specified release channel with optional notes.
-    """
-    msg = f"Published version {version} to {channel} channel."
-    if note:
-        msg += f" Note: {note}"
-    typer.echo(msg)
-    return msg
-
-
-# -----------------------------------------------------
-# 26) check_version
-# -----------------------------------------------------
-@app.command()
-def check_version(
-    local_path: str = typer.Argument(..., help="Local path to check"),
-    remote_url: str = typer.Option("", "--remote", help="Remote URL for comparison"),
-    detailed: bool = typer.Option(
-        False, "--detailed", help="Show detailed version info"
-    ),
-):
-    """
-    Checks the version of a local path against a remote source, optionally showing details.
-    """
-    # Mock version check
-    local_ver = "1.2.3"
-    remote_ver = "1.2.4" if remote_url else "1.2.3"
-
-    if local_ver == remote_ver:
-        result = f"Local version {local_ver} matches remote version."
-    else:
-        result = f"Local version {local_ver} differs from remote version {remote_ver}."
-
-    if detailed:
-        result += (
-            " (Detailed diff: local has old feature set, remote has new bugfixes.)"
-        )
     typer.echo(result)
     return result
 
