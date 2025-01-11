@@ -1,6 +1,7 @@
 from typing import List
 import os
 import logging
+from datetime import datetime
 from modules.assistant_config import get_config
 from modules.utils import (
     build_file_name_session,
@@ -100,21 +101,12 @@ class TyperAgent:
             self.logger.error(f"❌ Error building prompt: {str(e)}")
             raise
 
-    def process_text(self, text: str, typer_file: str, scratchpad: str, context_files: List[str]) -> str:
-        """Process text input and execute as typer command"""
-
-        # don't act on the assistants last input
-        if self.previous_responses and text in self.previous_responses[-1]:
-            self.logger.info(
-                f"🤖 Previous response found for '{text}'",
-                extra={"skip_stdout": True},
-            )
-            return
-
+    def process_text(self, text: str, typer_file: str, scratchpad: str, context_files: List[str], mode: str) -> str:
+        """Process text input and handle based on execution mode"""
         try:
             # Build fresh prompt with current state
             formatted_prompt = self.build_prompt(typer_file, scratchpad, context_files, text)
-
+            
             # Generate command using DeepSeek
             self.logger.info("🤖 Processing text with DeepSeek...")
             prefix = f"python {typer_file}"
@@ -125,20 +117,34 @@ class TyperAgent:
                 self.speak("I couldn't find that command")
                 return "Command not found"
 
-            # Execute the generated command
-            self.logger.info(f"⚡ Executing command: `{command}`")
-            output = execute_uv_python(command, typer_file)
+            # Handle different modes
+            assistant_name = get_config("typer_assistant.assistant_name")
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+            if mode == "default":
+                result = f"---\n{command}\n---"
+                append_text = f"\n\n{timestamp} - {assistant_name} generated:\n{result}"
+                with open(scratchpad, "a") as f:
+                    f.write(append_text)
+                return result
 
-            # Conversational response
-            self.think_speak(
-                f"You've successfully executed the command: `{command}` based on the request: `{text}`"
-            )
+            elif mode == "execute":
+                self.logger.info(f"⚡ Executing command: `{command}`")
+                output = execute_uv_python(command, typer_file)
+                
+                result = f"---\n{command}\n{output}\n---"
+                append_text = f"\n\n{timestamp} - {assistant_name} executed and generated:\n{result}"
+                with open(scratchpad, "a") as f:
+                    f.write(append_text)
+                return output
 
-            # Log results
-            self.logger.info("✅ Command execution completed successfully")
-            self.logger.info(f"📄 Output:\n{output}")
+            elif mode == "execute-no-scratch":
+                self.logger.info(f"⚡ Executing command: `{command}`")
+                output = execute_uv_python(command, typer_file)
+                return output
 
-            return output
+            else:
+                raise ValueError(f"Invalid mode: {mode}")
 
         except Exception as e:
             self.logger.error(f"❌ Error occurred: {str(e)}")

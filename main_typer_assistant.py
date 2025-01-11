@@ -26,6 +26,12 @@ def deep(
     context_files: List[str] = typer.Option(
         [], "--context", "-c", help="List of context files"
     ),
+    mode: str = typer.Option(
+        "default", 
+        "--mode", 
+        "-m", 
+        help="Execution mode: default (no exec), execute (exec + scratch), execute-no-scratch (exec only)"
+    ),
 ):
     """Run STT interface that processes speech into typer commands"""
     assistant, typer_file, scratchpad = TyperAgent.build_agent(typer_file, [scratchpad] + context_files)
@@ -111,7 +117,7 @@ def deep(
                 return
 
             recorder.stop()
-            output = assistant.process_text(text, typer_file, scratchpad)
+            output = assistant.process_text(text, typer_file, scratchpad, context_files, mode)
             print(f"🤖 Response:\n{output}")
             recorder.start()
         except Exception as e:
