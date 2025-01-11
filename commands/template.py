@@ -10,6 +10,8 @@ import string
 import shutil
 from datetime import datetime
 
+import yaml
+
 app = typer.Typer()
 
 # -----------------------------------------------------
@@ -164,27 +166,25 @@ def show_config(
     verbose: bool = typer.Option(False, "--verbose", help="Show config in detail?")
 ):
     """
-    Shows the current configuration. Reads from a `config.json` if available.
+    Shows the current configuration from modules/assistant_config.py.
     """
-    config_path = "config.json"
-    config_data = {
-        "app_name": "DemoApp",
-        "version": "1.2.3",
-        "api_endpoint": "https://api.example.com",
-    }
-    if not os.path.exists(config_path):
-        with open(config_path, "w") as f:
-            json.dump(config_data, f, indent=2)
+    try:
 
-    with open(config_path, "r") as f:
-        config = json.load(f)
+        config = ""
 
-    if verbose:
-        result = f"Verbose config:\n{json.dumps(config, indent=2)}"
-    else:
-        result = f"Config: App={config.get('app_name')} Version={config.get('version')}"
-    typer.echo(result)
-    return result
+        with open("./assistant_config.yml", "r") as f:
+            config = f.read()
+
+        if verbose:
+            result = f"Verbose config:\n{json.dumps(yaml.safe_load(config), indent=2)}"
+        else:
+            result = f"Config: {config}"
+        typer.echo(result)
+        return result
+    except ImportError:
+        result = "Error: Could not load assistant_config module"
+        typer.echo(result)
+        return result
 
 
 # -----------------------------------------------------

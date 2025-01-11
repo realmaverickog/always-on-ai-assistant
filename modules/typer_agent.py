@@ -26,12 +26,12 @@ class TyperAgent:
 
     def _validate_markdown(self, file_path: str) -> bool:
         """Validate that file is markdown and has expected structure"""
-        if not file_path.endswith(('.md', '.markdown')):
+        if not file_path.endswith((".md", ".markdown")):
             self.logger.error(f"📄 Scratchpad file {file_path} must be a markdown file")
             return False
-            
+
         try:
-            with open(file_path, 'r') as f:
+            with open(file_path, "r") as f:
                 content = f.read()
                 # Basic validation - could be expanded based on needs
                 if not content.strip():
@@ -60,7 +60,11 @@ class TyperAgent:
         return agent, typer_file, scratchpad[0]
 
     def build_prompt(
-        self, typer_file: str, scratchpad: str, context_files: List[str], prompt_text: str
+        self,
+        typer_file: str,
+        scratchpad: str,
+        context_files: List[str],
+        prompt_text: str,
     ) -> str:
         """Build and format the prompt template with current state"""
         try:
@@ -115,16 +119,27 @@ class TyperAgent:
             self.logger.error(f"❌ Error building prompt: {str(e)}")
             raise
 
-    def process_text(self, text: str, typer_file: str, scratchpad: str, context_files: List[str], mode: str) -> str:
+    def process_text(
+        self,
+        text: str,
+        typer_file: str,
+        scratchpad: str,
+        context_files: List[str],
+        mode: str,
+    ) -> str:
         """Process text input and handle based on execution mode"""
         try:
             # Build fresh prompt with current state
-            formatted_prompt = self.build_prompt(typer_file, scratchpad, context_files, text)
-            
+            formatted_prompt = self.build_prompt(
+                typer_file, scratchpad, context_files, text
+            )
+
             # Generate command using DeepSeek
             self.logger.info("🤖 Processing text with DeepSeek...")
             prefix = f"python {typer_file}"
-            command = prefix_prompt(prompt=formatted_prompt, prefix=prefix)
+            command = prefix_prompt(
+                prompt=formatted_prompt, prefix=prefix, no_prefix=True
+            )
 
             if command == prefix.strip():
                 self.logger.info(f"🤖 Command not found for '{text}'")
@@ -134,29 +149,35 @@ class TyperAgent:
             # Handle different modes with markdown formatting
             assistant_name = get_config("typer_assistant.assistant_name")
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            
+
+            command_with_prefix = f"uv run python {typer_file} {command}"
+
             if mode == "default":
-                result = f"\n## Command Generated ({timestamp})\n\n> Request: {text}\n\n```bash\n{command}\n```"
+                result = (
+                    f"\n## {assistant_name} Generated Command ({timestamp})\n\n"
+                    f"> Request: {text}\n\n"
+                    f"```bash\n{command_with_prefix}\n```"
+                )
                 with open(scratchpad, "a") as f:
                     f.write(result)
                 return result
 
             elif mode == "execute":
-                self.logger.info(f"⚡ Executing command: `{command}`")
+                self.logger.info(f"⚡ Executing command: `{command_with_prefix}`")
                 output = execute_uv_python(command, typer_file)
-                
+
                 result = (
-                    f"\n## Command Executed ({timestamp})\n\n"
+                    f"\n\n## {assistant_name} Executed Command ({timestamp})\n\n"
                     f"> Request: {text}\n\n"
-                    f"* **Command:** \n```bash\n{command}\n```\n\n"
-                    f"* **Output:** \n```\n{output}\n```"
+                    f"**{assistant_name}'s Command:** \n```bash\n{command_with_prefix}\n```\n\n"
+                    f"**Output:** \n```\n{output}\n```"
                 )
                 with open(scratchpad, "a") as f:
                     f.write(result)
                 return output
 
             elif mode == "execute-no-scratch":
-                self.logger.info(f"⚡ Executing command: `{command}`")
+                self.logger.info(f"⚡ Executing command: `{command_with_prefix}`")
                 output = execute_uv_python(command, typer_file)
                 return output
 

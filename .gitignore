@@ -195,3 +195,5 @@ specs/
 adw/
 
 realtimesst.log
+
+*.db

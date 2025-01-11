@@ -81,8 +81,8 @@ def awaken(
         # post_speech_silence_duration=0.3,
         # compute_type="int8",
         compute_type="float32",
-        # model="tiny.en", # VERY fast (.5s), but not accurate
-        model="small.en",  # decent speed (1.5s), improved accuracy
+        model="tiny.en",  # VERY fast (.5s), but not accurate
+        # model="small.en",  # decent speed (1.5s), improved accuracy
         # Beam size controls how many alternative transcription paths are explored
         # Higher values = more accurate but slower, lower values = faster but less accurate
         # beam_size=3,
