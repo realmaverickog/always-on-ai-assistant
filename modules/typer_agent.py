@@ -9,7 +9,7 @@ from modules.utils import (
     setup_logging,
 )
 from modules.deepseek import prefix_prompt
-from modules.execute_python import execute_uv_python
+from modules.execute_python import execute_uv_python, execute
 from elevenlabs import play
 from elevenlabs.client import ElevenLabs
 import time
@@ -136,10 +136,8 @@ class TyperAgent:
 
             # Generate command using DeepSeek
             self.logger.info("🤖 Processing text with DeepSeek...")
-            prefix = f"python {typer_file}"
-            command = prefix_prompt(
-                prompt=formatted_prompt, prefix=prefix, no_prefix=True
-            )
+            prefix = f"uv run python {typer_file}"
+            command = prefix_prompt(prompt=formatted_prompt, prefix=prefix)
 
             if command == prefix.strip():
                 self.logger.info(f"🤖 Command not found for '{text}'")
@@ -150,7 +148,8 @@ class TyperAgent:
             assistant_name = get_config("typer_assistant.assistant_name")
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            command_with_prefix = f"uv run python {typer_file} {command}"
+            # command_with_prefix = f"uv run python {typer_file} {command}"
+            command_with_prefix = command
 
             if mode == "default":
                 result = (
@@ -160,28 +159,32 @@ class TyperAgent:
                 )
                 with open(scratchpad, "a") as f:
                     f.write(result)
+                self.think_speak(f"Command generated")
                 return result
 
             elif mode == "execute":
                 self.logger.info(f"⚡ Executing command: `{command_with_prefix}`")
-                output = execute_uv_python(command, typer_file)
+                output = execute(command)
 
                 result = (
                     f"\n\n## {assistant_name} Executed Command ({timestamp})\n\n"
                     f"> Request: {text}\n\n"
                     f"**{assistant_name}'s Command:** \n```bash\n{command_with_prefix}\n```\n\n"
-                    f"**Output:** \n```\n{output}\n```"
+                    f"**Output:** \n```\n{output}```"
                 )
                 with open(scratchpad, "a") as f:
                     f.write(result)
+                self.think_speak(f"Command generated and executed")
                 return output
 
             elif mode == "execute-no-scratch":
                 self.logger.info(f"⚡ Executing command: `{command_with_prefix}`")
-                output = execute_uv_python(command, typer_file)
+                output = execute(command)
+                self.think_speak(f"Command generated and executed")
                 return output
 
             else:
+                self.think_speak(f"I had trouble running that command")
                 raise ValueError(f"Invalid mode: {mode}")
 
         except Exception as e:

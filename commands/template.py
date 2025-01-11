@@ -213,6 +213,49 @@ def list_files(
 
 
 # -----------------------------------------------------
+# 3.5) list_users
+# -----------------------------------------------------
+@app.command()
+def list_users(
+    role: str = typer.Option(None, "--role", help="Filter users by role"),
+    sort: str = typer.Option(
+        "username", "--sort", help="Sort by field (username, role, created_at)"
+    ),
+):
+    """
+    Lists all users, optionally filtered by role and sorted by specified field.
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+
+    query = "SELECT username, role, created_at FROM users"
+    params = []
+
+    if role:
+        query += " WHERE role = ?"
+        params.append(role)
+
+    query += f" ORDER BY {sort}"
+
+    cur.execute(query, params)
+    users = cur.fetchall()
+    conn.close()
+
+    if not users:
+        result = "No users found."
+        typer.echo(result)
+        return result
+
+    # Format output
+    result = "Users:\n"
+    for user in users:
+        result += f"- {user[0]} (Role: {user[1]}, Created: {user[2]})\n"
+
+    typer.echo(result)
+    return result
+
+
+# -----------------------------------------------------
 # 4) create_user
 # -----------------------------------------------------
 @app.command()
