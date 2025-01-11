@@ -1,5 +1,5 @@
 <purpose>
-    Given the available python typer-commands, the scratch-pad and the natural-language-request produce the correct typer CLI command.
+    Given the available python typer-commands, the context-files,the scratch-pad and the natural-language-request produce the correct typer CLI command.
 </purpose>
 
 <instructions>
@@ -11,11 +11,18 @@
     <instruction>If multiple commands are requested chain them together with '&&' so they run back to back in the terminal only if the previous command succeeds.</instruction>
     <instruction>Respond with the command only, we will prefix the correct python and file to it.</instruction>
     <instruction>If the natural-language-request does not ask for a command (or is something nonsense) that is not in the typer-commands file, respond with an empty string.</instruction>
+    <instruction>If relevant to the natural-language-request, use the context-files to aid your decision making.</instruction>
+    <instruction>If relevant to the natural-language-request, use the scratch-pad to aid your decision making. You can expect useful information in the scratch-pad especially if explicitly asked referenced in the natural-language-request.</instruction>
+
 </instructions>
 
 <typer-commands>
 {{typer-commands}}
 </typer-commands>
+
+<context-files>
+{{context_files}}
+</context-files>
 
 <scratch-pad>
 {{scratch_pad}}

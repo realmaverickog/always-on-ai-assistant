@@ -20,12 +20,15 @@ def deep(
     typer_file: str = typer.Option(
         ..., "--typer-file", "-f", help="Path to typer commands file"
     ),
-    scratchpad: List[str] = typer.Option(
-        ..., "--scratchpad", "-s", help="List of scratchpad files"
+    scratchpad: str = typer.Option(
+        ..., "--scratchpad", "-s", help="Path to scratchpad file"
+    ),
+    context_files: List[str] = typer.Option(
+        [], "--context", "-c", help="List of context files"
     ),
 ):
     """Run STT interface that processes speech into typer commands"""
-    assistant, typer_file, scratchpad = TyperAgent.build_agent(typer_file, scratchpad)
+    assistant, typer_file, scratchpad = TyperAgent.build_agent(typer_file, [scratchpad] + context_files)
 
     print("🎤 Speak now... (press Ctrl+C to exit)")
 

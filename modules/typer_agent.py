@@ -45,7 +45,7 @@ class TyperAgent:
         return cls(logger, session_id), typer_file, scratchpad
 
     def build_prompt(
-        self, typer_file: str, scratchpad: List[str], prompt_text: str
+        self, typer_file: str, scratchpad: str, context_files: List[str], prompt_text: str
     ) -> str:
         """Build and format the prompt template with current state"""
         try:
@@ -54,20 +54,26 @@ class TyperAgent:
             with open(typer_file, "r") as f:
                 typer_content = f.read()
 
-            # Load all scratchpad files
-            self.logger.info("📝 Loading scratchpad files...")
-            scratchpad_content = ""
-            for file_path in scratchpad:
+            # Load scratchpad file
+            self.logger.info("📝 Loading scratchpad file...")
+            if not os.path.exists(scratchpad):
+                self.logger.error(f"📄 Scratchpad file {scratchpad} does not exist")
+                raise FileNotFoundError(f"Scratchpad file {scratchpad} does not exist")
+
+            with open(scratchpad, "r") as f:
+                scratchpad_content = f.read()
+
+            # Load context files
+            context_content = ""
+            for file_path in context_files:
                 if not os.path.exists(file_path):
-                    self.logger.error(f"📄 Scratchpad file {file_path} does not exist")
-                    raise FileNotFoundError(
-                        f"Scratchpad file {file_path} does not exist"
-                    )
+                    self.logger.error(f"📄 Context file {file_path} does not exist")
+                    raise FileNotFoundError(f"Context file {file_path} does not exist")
 
                 with open(file_path, "r") as f:
                     file_content = f.read()
                     file_name = os.path.basename(file_path)
-                    scratchpad_content += f'\t<scratchpad name="{file_name}">\n{file_content}\n</scratchpad>\n\n'
+                    context_content += f'\t<context name="{file_name}">\n{file_content}\n</context>\n\n'
 
             # Load and format prompt template
             self.logger.info("📝 Loading prompt template...")
@@ -78,6 +84,7 @@ class TyperAgent:
             formatted_prompt = (
                 prompt_template.replace("{{typer-commands}}", typer_content)
                 .replace("{{scratch_pad}}", scratchpad_content)
+                .replace("{{context_files}}", context_content)
                 .replace("{{natural_language_request}}", prompt_text)
             )
 
@@ -93,7 +100,7 @@ class TyperAgent:
             self.logger.error(f"❌ Error building prompt: {str(e)}")
             raise
 
-    def process_text(self, text: str, typer_file: str, scratchpad: List[str]) -> str:
+    def process_text(self, text: str, typer_file: str, scratchpad: str, context_files: List[str]) -> str:
         """Process text input and execute as typer command"""
 
         # don't act on the assistants last input
@@ -106,7 +113,7 @@ class TyperAgent:
 
         try:
             # Build fresh prompt with current state
-            formatted_prompt = self.build_prompt(typer_file, scratchpad, text)
+            formatted_prompt = self.build_prompt(typer_file, scratchpad, context_files, text)
 
             # Generate command using DeepSeek
             self.logger.info("🤖 Processing text with DeepSeek...")
