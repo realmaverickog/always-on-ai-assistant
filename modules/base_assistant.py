@@ -1,7 +1,8 @@
 from typing import List, Dict
 import logging
 import os
-from modules.deepseek import conversational_prompt
+from modules.deepseek import conversational_prompt as deepseek_conversational_prompt
+from modules.ollama import conversational_prompt as ollama_conversational_prompt
 from modules.utils import build_file_name_session
 from RealtimeTTS import TextToAudioStream, SystemEngine
 from elevenlabs import play
@@ -16,24 +17,23 @@ class PlainAssistant:
         self.logger = logger
         self.session_id = session_id
         self.conversation_history = []
-        
+
         # Get voice configuration
         self.voice_type = get_config("base_assistant.voice")
         self.elevenlabs_voice = get_config("base_assistant.elevenlabs_voice")
-        
+        self.brain = get_config("base_assistant.brain")
+
         # Initialize appropriate TTS engine
         if self.voice_type == "local":
             self.logger.info("🔊 Initializing local TTS engine")
             self.engine = pyttsx3.init()
-            self.engine.setProperty('rate', 150)  # Speed of speech
-            self.engine.setProperty('volume', 1.0)  # Volume level
+            self.engine.setProperty("rate", 150)  # Speed of speech
+            self.engine.setProperty("volume", 1.0)  # Volume level
         elif self.voice_type == "realtime-tts":
             self.logger.info("🔊 Initializing RealtimeTTS engine")
             self.engine = SystemEngine()
             self.stream = TextToAudioStream(
-                self.engine, 
-                frames_per_buffer=256, 
-                playout_chunk_size=1024
+                self.engine, frames_per_buffer=256, playout_chunk_size=1024
             )
         elif self.voice_type == "elevenlabs":
             self.logger.info("🔊 Initializing ElevenLabs TTS engine")
@@ -45,16 +45,26 @@ class PlainAssistant:
         """Process text input and generate response"""
         try:
             # Check if text matches our last response
-            if self.conversation_history and text.strip().lower() in self.conversation_history[-1]["content"].lower():
+            if (
+                self.conversation_history
+                and text.strip().lower()
+                in self.conversation_history[-1]["content"].lower()
+            ):
                 self.logger.info("🤖 Ignoring own speech input")
                 return ""
 
             # Add user message to conversation history
             self.conversation_history.append({"role": "user", "content": text})
 
-            # Generate response using DeepSeek
-            self.logger.info("🤖 Processing text with DeepSeek...")
-            response = conversational_prompt(self.conversation_history)
+            # Generate response using configured brain
+            self.logger.info(f"🤖 Processing text with {self.brain}...")
+            if self.brain.startswith("ollama:"):
+                model_no_prefix = ":".join(self.brain.split(":")[1:])
+                response = ollama_conversational_prompt(
+                    self.conversation_history, model=model_no_prefix
+                )
+            else:
+                response = deepseek_conversational_prompt(self.conversation_history)
 
             # Add assistant response to history
             self.conversation_history.append({"role": "assistant", "content": response})
@@ -72,24 +82,24 @@ class PlainAssistant:
         """Convert text to speech using configured engine"""
         try:
             self.logger.info(f"🔊 Speaking: {text}")
-            
+
             if self.voice_type == "local":
                 self.engine.say(text)
                 self.engine.runAndWait()
-                
+
             elif self.voice_type == "realtime-tts":
                 self.stream.feed(text)
                 self.stream.play()
-                
+
             elif self.voice_type == "elevenlabs":
                 audio = self.elevenlabs_client.generate(
                     text=text,
                     voice=self.elevenlabs_voice,
                     model="eleven_turbo_v2",
-                    stream=False
+                    stream=False,
                 )
                 play(audio)
-                
+
             self.logger.info(f"🔊 Spoken: {text}")
 
         except Exception as e:
