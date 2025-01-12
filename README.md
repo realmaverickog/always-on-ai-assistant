@@ -3,7 +3,7 @@
 
 ## Setup
 - `cp .env.sample .env`
-  - Update with your keys
+  - Update with your keys `DEEPSEEK_API_KEY` and `ELEVEN_API_KEY`
 - `uv sync`
 - (optional) install python 3.11 (`uv python install 3.11`)
 
@@ -11,17 +11,18 @@
 ## Assistant Architecture
 
 ### Typer Assistant
+> See `assistant_config.yml` for more details.
 - 🧠 Brain: `Deepseek V3`
 - 📝 Job (Prompt(s)): `prompts/typer-commands.xml`
-- 💻 Active Memory (Dynamic Variables): `scratchpad.txt` + `commands/template.py`
+- 💻 Active Memory (Dynamic Variables): `scratchpad.txt`
 - 👂 Ears (STT): `RealtimeSTT`
-- 🎤 Mouth (TTS): `ElevenLabs (Flash 2.5)`
+- 🎤 Mouth (TTS): `ElevenLabs`
 
 ### Base Assistant
-- 🧠 Brain: `Deepseek V3`
+> See `assistant_config.yml` for more details.
 - 🧠 Brain: `Deepseek V3`
 - 📝 Job (Prompt(s)): `None`
-- 💻 Active Memory (Dynamic Variables): `scratchpad.txt` + `commands/template.py`
+- 💻 Active Memory (Dynamic Variables): `scratchpad.txt`
 - 👂 Ears (STT): `RealtimeSTT`
 - 🎤 Mouth (TTS): `RealtimeTTS`
 
@@ -33,7 +34,7 @@
 Start a conversational chat session with the base assistant:
 
 ```bash
-python main_base_assistant.py chat
+uv run python main_base_assistant.py chat
 ```
 
 This will start an interactive chat session where you can:

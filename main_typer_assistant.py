@@ -91,7 +91,7 @@ def awaken(
         # Batch size controls how many audio chunks are processed together
         # Higher values = faster processing but uses more memory, lower values = slower processing but uses less memory
         batch_size=25,
-        # model="large-v3", # very slow, but accurate
+        # model="large-v3",  # very slow, but accurate
         # model="distil-large-v3", # very slow but accurate
         # realtime_model_type="tiny.en",
         # realtime_model_type="large-v3",

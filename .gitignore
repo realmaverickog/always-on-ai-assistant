@@ -197,3 +197,5 @@ adw/
 realtimesst.log
 
 *.db
+
+report.json
