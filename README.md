@@ -21,6 +21,10 @@ uv run python main_base_assistant.py chat
 ### Typer Assistant Conversational Commands
 > See `main_typer_assistant.py`, `modules/typer_agent.py`, and `commands/template.py` for more details.
 
+- `--typer-file`: file containing typer commands
+- `--scratchpad`: active memory for you and your assistant
+- `--mode`: determines what the assistant does with the command: ('default', 'execute', 'execute-no-scratch').
+
 ```bash
 uv run python main_typer_assistant.py awaken --typer-file commands/template.py --scratchpad scratchpad.md --mode execute
 ```

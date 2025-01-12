@@ -30,7 +30,7 @@ def awaken(
         "default",
         "--mode",
         "-m",
-        help="Execution mode: default (no exec), execute (exec + scratch), execute-no-scratch (exec only)",
+        help="Options: ('default', 'execute', 'execute-no-scratch'). Execution mode: default (no exec), execute (exec + scratch), execute-no-scratch (exec only)",
     ),
 ):
     """Run STT interface that processes speech into typer commands"""
