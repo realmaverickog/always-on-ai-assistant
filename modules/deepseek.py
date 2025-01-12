@@ -115,7 +115,7 @@ def prefix_then_stop_prompt(
 
 def conversational_prompt(
     messages: List[Dict[str, str]],
-    system_prompt: str = "You are a helpful conversational assistant.",
+    system_prompt: str = "You are a helpful conversational assistant. Respond in a short, concise, friendly manner.",
     model: str = DEEPSEEK_V3_MODEL,
 ) -> str:
     """

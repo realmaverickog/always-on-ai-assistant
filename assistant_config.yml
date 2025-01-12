@@ -9,6 +9,6 @@ base_assistant:
   assistant_name: Ada
   human_companion_name: Dan
   ears: realtime-stt
-  brain: ollama:falcon3:10b # deepseek-v3, ollama:phi4, ollama:<any installed model>
+  brain: ollama:phi4 # deepseek-v3, ollama:phi4, ollama:<any installed model>
   voice: local # local, elevenlabs
   elevenlabs_voice: WejK3H1m7MI9CHnIjW9K
