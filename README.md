@@ -1,5 +1,9 @@
 # Deepseek AI Assistant
-> A powerful typer based Deepseek AI Assistant you can use to engineer TODAY.
+> A pattern for an always on AI Assistant powered by Deepseek-V3, RealtimeSTT, and Typer for engineering
+>
+> Checkout [the demo](https://youtu.be/zoBwIi4ZiTA) where we walk through using this always-on-ai-assistant.
+
+![ada-deepseek-v3.png](./images/ada-deepseek-v3.png)
 
 ## Setup
 - `cp .env.sample .env`
