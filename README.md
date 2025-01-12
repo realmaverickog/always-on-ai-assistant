@@ -25,10 +25,17 @@ uv run python main_base_assistant.py chat
 - `--scratchpad`: active memory for you and your assistant
 - `--mode`: determines what the assistant does with the command: ('default', 'execute', 'execute-no-scratch').
 
+1. Awaken the assistant
 ```bash
 uv run python main_typer_assistant.py awaken --typer-file commands/template.py --scratchpad scratchpad.md --mode execute
 ```
 
+2. Speak to the assistant
+Try this:
+"Hello! Ada, ping the server wait for a response" (be sure to pronounce 'ada' clearly)
+
+3. See the command in the scratchpad
+Open `scratchpad.md` to see the command that was generated.
 
 ## Assistant Architecture
 
