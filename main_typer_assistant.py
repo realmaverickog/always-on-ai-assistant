@@ -39,46 +39,11 @@ def awaken(
 
     print("🎤 Speak now... (press Ctrl+C to exit)")
 
-    """
-    Play with these configuration settings.
-
-    recorder_config = {
-        'spinner': False,
-        'model': 'large-v3',
-        #'realtime_model_type': 'medium.en',
-        'realtime_model_type': 'tiny.en',
-        'language': 'en',
-        'silero_sensitivity': 0.4,
-        'webrtc_sensitivity': 3,
-        'post_speech_silence_duration': unknown_sentence_detection_pause,
-        'min_length_of_recording': 1.1,
-        'min_gap_between_recordings': 0,
-        'enable_realtime_transcription': True,
-        'realtime_processing_pause': 0.05,
-        'on_realtime_transcription_update': text_detected,
-        'silero_deactivity_detection': True,
-        'early_transcription_on_silence': 0,
-        'beam_size': 5,
-        'beam_size_realtime': 1,
-        'batch_size': 4,
-        'realtime_batch_size': 4,
-        'no_log_file': True,
-        'initial_prompt_realtime': (
-            "End incomplete sentences with ellipses.\n"
-            "Examples:\n"
-            "Complete: The sky is blue.\n"
-            "Incomplete: When the sky...\n"
-            "Complete: She walked home.\n"
-            "Incomplete: Because he...\n"
-        )
-    }
-    
-    """
     recorder = AudioToTextRecorder(
         spinner=False,
-        # wake_words="deep"
+        # wake_words="deep" # specific wake words to trigger the assistant using the realtime-stt library. we do this manually below so we can use any word.
         # realtime_processing_pause=0.3,
-        post_speech_silence_duration=1.5,
+        post_speech_silence_duration=1.5,  # how long to wait after speech ends before processing
         # compute_type="int8",
         compute_type="float32",
         model="tiny.en",  # VERY fast (.5s), but not accurate
@@ -92,8 +57,8 @@ def awaken(
         # Higher values = faster processing but uses more memory, lower values = slower processing but uses less memory
         batch_size=25,
         # model="large-v3",  # very slow, but accurate
-        # model="distil-large-v3", # very slow but accurate
-        # realtime_model_type="tiny.en",
+        # model="distil-large-v3", # very slow (but faster than large-v3) but accurate
+        # realtime_model_type="tiny.en", # realtime models are used for the on_realtime_transcription_update() callback
         # realtime_model_type="large-v3",
         language="en",
         print_transcription_time=True,
