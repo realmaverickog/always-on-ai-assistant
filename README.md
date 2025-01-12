@@ -42,6 +42,7 @@ Try this:
 Open `scratchpad.md` to see the command that was generated.
 
 ## Assistant Architecture
+> See `assistant_config.yml` for more details.
 
 ### Typer Assistant
 > See `assistant_config.yml` for more details.
@@ -53,11 +54,11 @@ Open `scratchpad.md` to see the command that was generated.
 
 ### Base Assistant
 > See `assistant_config.yml` for more details.
-- 🧠 Brain: `Deepseek V3`
+- 🧠 Brain: `ollama:phi4`
 - 📝 Job (Prompt(s)): `None`
-- 💻 Active Memory (Dynamic Variables): `scratchpad.txt`
+- 💻 Active Memory (Dynamic Variables): `none`
 - 👂 Ears (STT): `RealtimeSTT`
-- 🎤 Mouth (TTS): `RealtimeTTS`
+- 🎤 Mouth (TTS): `local`
 
 
 ## Resources
